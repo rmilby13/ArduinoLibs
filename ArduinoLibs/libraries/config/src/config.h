@@ -13,7 +13,7 @@
 #include <FS.h>
 #include <ArduinoJson.h>
 
-typedef StaticJsonDocument<1024> jsondoc;
+typedef JsonDocument jsondoc;
 
 class ConfigInfo {
 public:

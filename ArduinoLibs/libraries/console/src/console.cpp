@@ -95,6 +95,7 @@ bool Console::cmdAvailable () {
    }*/
   return !this->pendingCommands.empty ();
 }
+
 ConsoleCommand Console::getCommand () {
   LOCK(&this->commandLock);
   ConsoleCommand cmd = this->pendingCommands.front ();
