@@ -22,6 +22,7 @@ public:
   arduino::String display();
   void save(File filehandle);
   virtual jsondoc load(File filehandle);
+  virtual jsondoc load(arduino::String jsonString);
 protected:
   virtual jsondoc createJsonDoc();
 };

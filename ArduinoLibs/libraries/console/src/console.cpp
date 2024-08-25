@@ -7,6 +7,7 @@
 
 #include "console.h"
 #include <Arduino.h>
+#include <string.h>
 
 #ifndef SKIPMUTEX
 #define LOCK(...) mutex_enter_blocking (__VA_ARGS__)
@@ -87,6 +88,16 @@ arduino::String ConsoleCommand::arg (unsigned int pos) {
     p++;
   }
   return ret;
+}
+
+arduino::String ConsoleCommand::fullLine(){
+	arduino::String ret = "";
+	for (auto const &arg : this->args){
+		ret.concat(arg);
+		ret.concat(" ");
+	}
+	ret.trim();
+	return ret;
 }
 
 bool Console::cmdAvailable () {

@@ -21,6 +21,7 @@ public:
   arduino::String command();
   int argCount();
   arduino::String arg(unsigned int pos);
+  arduino::String fullLine();
 private:
   argList args;
 };

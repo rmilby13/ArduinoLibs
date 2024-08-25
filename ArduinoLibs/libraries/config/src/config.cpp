@@ -51,3 +51,10 @@ jsondoc ConfigInfo::load (File filehandle) {
   deserializeJson (doc, filehandle);
   return doc;
 }
+
+jsondoc ConfigInfo::load (arduino::String jsonString) {
+  TRACE("Starting ConfigInfo::load");
+  jsondoc doc;
+  deserializeJson (doc, jsonString);
+  return doc;
+}
