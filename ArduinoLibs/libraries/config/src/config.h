@@ -20,12 +20,12 @@ public:
   ConfigInfo();
   virtual ~ConfigInfo();
   arduino::String display();
-  void save(File filehandle);
-  virtual jsondoc load(File filehandle);
-  virtual jsondoc load(arduino::String jsonString);
+  void saveJson(File filehandle);
+  void loadJson(File filehandle);
+  void loadJson(arduino::String jsonString);
+  virtual void loadJsonDoc(jsondoc configjsondoc) = 0;
 protected:
   virtual jsondoc createJsonDoc();
 };
-//extern ConfigInfo config; // = new ConfigInfo();
 
 #endif /* CONFIG_H_ */

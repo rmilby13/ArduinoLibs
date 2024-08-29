@@ -40,21 +40,22 @@ jsondoc ConfigInfo::createJsonDoc () {
   return doc;
 }
 
-void ConfigInfo::save (File filehandle) {
+void ConfigInfo::saveJson (File filehandle) {
   TRACE("Starting ConfigInfo::save");
   serializeJson (this->createJsonDoc (), filehandle);
 }
 
-jsondoc ConfigInfo::load (File filehandle) {
+void ConfigInfo::loadJson (File filehandle) {
   TRACE("Starting ConfigInfo::load");
   jsondoc doc;
   deserializeJson (doc, filehandle);
-  return doc;
+  this->loadJsonDoc(doc);
 }
 
-jsondoc ConfigInfo::load (arduino::String jsonString) {
-  TRACE("Starting ConfigInfo::load");
+void ConfigInfo::loadJson (arduino::String jsonString) {
+  DEBUG("Starting ConfigInfo::load");
   jsondoc doc;
   deserializeJson (doc, jsonString);
-  return doc;
+  DEBUG("Configuring application");
+  this->loadJsonDoc(doc);
 }
