@@ -23,9 +23,9 @@ public:
   void saveJson(File filehandle);
   void loadJson(File filehandle);
   void loadJson(arduino::String jsonString);
-  virtual void loadJsonDoc(jsondoc configjsondoc) = 0;
 protected:
   virtual jsondoc createJsonDoc();
+  virtual void loadJsonDoc(jsondoc configjsondoc) = 0;
 };
 
 #endif /* CONFIG_H_ */
