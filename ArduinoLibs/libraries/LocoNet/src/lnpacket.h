@@ -18,27 +18,33 @@ namespace LocoNet {
   	LNPacket(uint len);
   	LNPacket(byte dataArray[], uint len);
   	LNPacket(packet_data& pdata);
-  //	LNPacket(packet_data dataArray, uint len);
+  	static LNPacket* factory(packet_data& pdata);
+    //LNPacket(packet_data dataArray, uint len);
   	//LNPacket(const LNPacket &packet);
   	LNPacket(LN_OP_CODE opc);
-  	~LNPacket();
-  	uint len();
-  	arduino::String repr();
+    //static LNPacket* factory(byte dataArray[], uint len);
+  	virtual ~LNPacket();
+  	virtual arduino::String toString();
   	uint static getLen(byte b);
-  	LN_OP_CODE get_opcode();
-  	uint getaddr();
-  	void setaddr(uint addr);
+  	uint len();
+  	virtual LN_OP_CODE get_opcode();
+  	static LN_OP_CODE get_opcode(byte firstByte);
   	bool valid();
-  	bool getClosed();
-  	void setClosed(bool closed);
-  	bool getActive();
-  	void setActive(bool active);
   	byte getByte(uint pos);
-
+  	//uint getaddr();
+  	//void setaddr(uint addr);
+  	//bool getClosed();
+  	//void setClosed(bool closed);
+  	//bool getActive();
+  	//void setActive(bool active);
+protected:
+  	void setByte(uint pos, byte b);
+  	void setData(byte dataArray[], uint len);
+  	void setCheckSum();
+  	packet_data data;
   private:
   	//byte data[LOCONET_MAX_PACKET_SIZE];
-  	packet_data data;
-  	void setCheckSum();
+//  	uint len;
   	//byte getLen(byte b);
   	byte getLen(LN_OP_CODE opc);
   };

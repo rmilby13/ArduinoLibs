@@ -315,12 +315,13 @@ void LocoNet::LocoNet::sendBytes () {
 void LocoNet::LocoNet::processPacket (LNPacket packet) {
   switch (packet.get_opcode ())
     {
-    case LN_OPC_INPUT_REP:
+/*    case LN_OPC_INPUT_REP:
       this->ssm[packet.getaddr ()] = packet.getActive () ? LN_SEN_ACTIVE : LN_SEN_INACTIVE;
       break;
     case LN_OPC_SW_REQ:
       this->swsm[packet.getaddr()] = packet.getClosed() ? packet.getActive() ? LN_SW_CLOSED_ACTIVE : LN_SW_CLOSED_INACTIVE : packet.getActive() ? LN_SW_THROWN_ACTIVE : LN_SW_THROWN_INACTIVE;
       break;
+      */
     default:
       packet.get_opcode ();
     }
