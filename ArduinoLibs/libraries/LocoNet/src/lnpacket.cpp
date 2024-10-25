@@ -1,7 +1,6 @@
 #include "lnpacket.h"
-#include "lnconst.h"
 #include "Arduino.h"
-#include "ln_nop.h"
+//#define TRACELNPACKET
 #ifdef DEBUGLNPACKET
 #define LNPDEBUG(...) Serial.printf("%s:%d:\t",__FILE__,__LINE__); Serial.print(__VA_ARGS__)
 #define LNPDEBUGLN(...) Serial.printf("%s:%d:\t",__FILE__,__LINE__); Serial.println(__VA_ARGS__)
@@ -25,22 +24,6 @@ LocoNet::LNPacket::LNPacket( uint len ) {
 	this->data.resize (len, 0);
 }
 
-/*
-LocoNet::LNPacket::LNPacket( byte dataArray[], uint len ) {
-	LNPDEBUG("Creating Packet:");
-	this->data.resize (0);
-	for (uint i = 0; i < len; i++) {
-		LNPDEBUG("*");
-		LNPDEBUG(dataArray[i], HEX);
-		this->data.push_back (dataArray[i]);
-	}
-	;
-	this->setCheckSum ();
-	LNPDEBUGLN(";");
-}
-;
-*/
-
 LocoNet::LNPacket::LNPacket( packet_data &pdata ) {
 	LNPDEBUG("Building Packet from packet data [");
 	for (packet_data::iterator it = pdata.begin (); it != pdata.end (); ++it) {
@@ -50,7 +33,7 @@ LocoNet::LNPacket::LNPacket( packet_data &pdata ) {
 	};
 	LNPDEBUGLN(" ]");
 }
-
+/*
 LocoNet::LNPacket::LNPacket( byte dataArray[], uint len ) {
 	LNPDEBUG("Building LN Packet from dataArray of length %d", len);
 	for (uint it = 0; it < len; it++) {
@@ -60,7 +43,7 @@ LocoNet::LNPacket::LNPacket( byte dataArray[], uint len ) {
 	};
 	LNPDEBUGLN(" ]");
 }
-
+*/
 LocoNet::LNPacket::LNPacket( LN_OP_CODE opc ) {
 	uint packetLen = this->getLen (opc);
 	this->data.resize (packetLen);
@@ -100,20 +83,12 @@ LocoNet::LNPacket::LNPacket( LN_OP_CODE opc ) {
 			break;
 	};
 	this->setCheckSum ();
-	LNPDEBUGLN(this->repr ().c_str ());
+	LNPDEBUGLN(this->toString().c_str ());
 }
 ;
 
-
-//LNPacket::LNPacket (const LNPacket &packet) {
-//  LNPDEBUGLN("Creating Packet with Packet:");
-//LNPDEBUGLN(packet->repr ());
-//this->data = packet->data;
-//LNPDEBUGLN(this->repr());
-//}
-
 LocoNet::LNPacket::~LNPacket() {
-	//LNPDEBUGLN("Freeing Packet:" + this->repr ());
+	LNPDEBUGLN("Freeing Packet:" + this->repr ());
 }
 ;
 
@@ -166,16 +141,21 @@ LocoNet::LN_OP_CODE LocoNet::LNPacket::get_opcode(byte firstByte){
 
 LocoNet::LNPacket* LocoNet::LNPacket::factory(packet_data &pdata){
 	LNPacket* packet;
-	switch (LocoNet::LNPacket::get_opcode(pdata.at(0))){
+	switch (LNPacket::get_opcode(pdata.at(0))){
 		case LN_OPC_NOOP:
-			packet = new LocoNet::LN_NOP(pdata);
+			packet = new LN_NOP(pdata);
+			break;
+		case LN_OPC_SW_REQ:
+			packet = new LN_SW_REQ(pdata);
+			break;
+		case LN_OPC_IMM_PACKET:
+			packet = new LN_IMM_Packet(pdata);
 			break;
 		default:
-			packet = new LocoNet::LNPacket(pdata);
+			packet = new LNPacket(pdata);
 	}
 	return packet;
 }
-
 
 uint LocoNet::LNPacket::len() {
 	return this->data.size ();
@@ -190,12 +170,13 @@ arduino::String LocoNet::LNPacket::toString() {
 	LNPDEBUGLN("Building representation of LoconetPacket");
 	String ret = "[ ";
 	for (uint i = 0; i < this->len (); i++) {
+//		Serial.printf ("%08b ", this->data.at(i));
 		ret = ret + (this->data.at (i) < 16 ? "0" : "") + String (this->data.at (i), HEX) + " ";
 	}
 	ret += "] ";
 	LNPTRACELN(ret);
 	if (!this->valid ()) {
-		ret += "Invalid";
+		ret += "*Invalid* ";
 	};
 	LNPDEBUGLN(ret);
 	return ret;

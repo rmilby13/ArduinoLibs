@@ -1,19 +1,23 @@
 #include "loconet.h"
 #include "lnconst.h"
-#if defined(DEBUGLOCONET) || defined(TRACELOCONET)
-#define LNDEBUG(...) Serial.printf("%s:%d:\t",__FILE__,__LINE__); Serial.print(__VA_ARGS__)
-#define LNDEBUGLN(...) Serial.printf("%s:%d:\t",__FILE__,__LINE__); Serial.println(__VA_ARGS__)
-#else
-#define LNDEBUG(...)
-#define LNDEBUGLN(...)
-#endif
+#include <arduino.h>
+//#define DEBUGLOCONET
+
 #ifdef TRACELOCONET
 #define LNTRACE(...) LNDEBUG(__VA_ARGS__)
 #define LNTRACELN(...) LNDEBUGLN(__VA_ARGS__)
+#define DEBUGLOCONET
 #else
 #define LNTRACE(...)
 #define LNTRACELN(...)
 #endif
+
+#ifdef DEBUGLOCONET
+#define LNDEBUG(...) Serial.printf("%s:%d:\t",__FILE__,__LINE__); Serial.printf(__VA_ARGS__) ; Serial.println();
+#else
+#define LNDEBUG(...)
+#endif
+
 #ifndef SKIPMUTEX
 #define LOCK(...) mutex_enter_blocking (__VA_ARGS__)
 #define UNLOCK(...) mutex_exit (__VA_ARGS__)
@@ -138,10 +142,7 @@ void LocoNet::LocoNet::begin (unsigned char lnTxPin, unsigned char lnRxPin) {
 void LocoNet::LocoNet::send (LNPacket &packet) {
   //LNPacket p = LNPacket(packet.len());
   //this->NetPri = (this->txbuffer.size()==0) ? DigiTraxInitPriority : this->NetPri;
-  LNDEBUG("Queuing Packet to send, queue size = ");
-  LNDEBUG(this->txbuffer.size ());
-  LNDEBUG(" - ");
-  LNDEBUGLN(packet.repr ());
+  LNDEBUG("Queuing Packet to send, queue size = %d - %s", this->txbuffer.size (), packet.toString().c_str());
   if (packet.valid ()) {
 #ifndef SKIPMUTEX
     mutex_enter_blocking (&this->txbufferlock);
@@ -155,6 +156,7 @@ void LocoNet::LocoNet::send (LNPacket &packet) {
 ;
 
 void LocoNet::LocoNet::recieve (LNPacket &packet) {
+  LNDEBUG("Received Packet %s", packet.toString().c_str());
   LOCK(&this->rxbufferlock);
   for (uint i = 0; i < packet.len (); i++) {
     this->rxbuffer.push_back (packet.getByte (i));
@@ -183,10 +185,10 @@ LocoNet::LNPacket LocoNet::LocoNet::getPacket () {
   }
   if (this->rxbuffer.size () < 2) { // Minimum packet size is 2 bytes, if there there are not at least two bytes, break fast.
     //LNDEBUG()
-    return LNPacket (LN_OPC_NOOP);
+    return LN_NOP();
   }
   uint plen = LNPacket::getLen (this->rxbuffer.front ());
-  if (this->rxbuffer.size () == LOCONET_MAX_PACKET_SIZE) { // if the packet size isn't 2, 4, or 6 byes, get the packet size from the packet
+  if (plen == LOCONET_MAX_PACKET_SIZE) { // if the packet size isn't 2, 4, or 6 byes, get the packet size from the packet
     LNTRACELN("Need to get size of buffer from first byte");
     LOCK(&this->rxbufferlock);
     unsigned char opc = this->rxbuffer.front ();
@@ -196,9 +198,9 @@ LocoNet::LNPacket LocoNet::LocoNet::getPacket () {
     UNLOCK(&this->rxbufferlock);
   }
   if (this->rxbuffer.size () < plen) { // fast exit if the queue is empty or not long enough
-    LNTRACE("Rxbuffer not long enough for this packet yet buffer length : ");LNTRACE(this->rxbuffer.size ());LNTRACE(" expected ");LNTRACELN(plen);
+	LNDEBUG("Rxbuffer not long enough for this packet yet buffer length : ");LNTRACE(this->rxbuffer.size ());LNTRACE(" expected ");LNTRACELN(plen);
 
-    return LNPacket (LN_OPC_NOOP);
+    return LN_NOP();
   }
 
   packet_data packbytes;
@@ -211,34 +213,38 @@ LocoNet::LNPacket LocoNet::LocoNet::getPacket () {
   }
   UNLOCK(&this->rxbufferlock);LNTRACELN("]*");LNTRACELN("Returning Packet");
   processPacket (LNPacket (packbytes));
+  LNDEBUG("Returning packet");
   return LNPacket (packbytes);
 }
 ;
 
 void LocoNet::LocoNet::showTxBuffer () {
-#if defined(DEBUGLOCONET) || defined(TRACELOCONET)
-  //LocoNet::packet_queue squeue = this->txbuffer;
-  Serial.print ("txbuffer:");
+#if defined(DEBUGLOCONET)
+  //std::deque<byte>::iterator it;
+  arduino::String s = "txbuffer = [\n";
   LOCK(&this->txbufferlock);
   for (auto it : this->txbuffer) {
-    LNDEBUG(" * ");
-    LNDEBUGLN(it.repr ());
+    s = s + " ";
+    s = s + it.toString();
+    s = s + "\n";
   }
   UNLOCK(&this->txbufferlock);
-  LNDEBUGLN("");
+  s = s + " ]";
+  LNDEBUG(s.c_str());
 #endif
 }
 void LocoNet::LocoNet::showRxBuffer () {
-#if defined(DEBUGLOCONET) || defined(TRACELOCONET)
+#if defined(DEBUGLOCONET)
   //std::deque<byte>::iterator it;
-  LNDEBUG("rxbuffer = [");
+  arduino::String s = "rxbuffer = [ ";
   LOCK(&this->rxbufferlock);
   for (auto it : this->rxbuffer) {
-    LNDEBUG(" ");
-    LNDEBUG(it, HEX);
+    s = s + " ";
+    s = s + String( it, HEX);
   }
   UNLOCK(&this->rxbufferlock);
-  LNDEBUGLN(" ]");
+  s = s + " ]";
+  LNDEBUG(s.c_str());
 #endif
 }
 ;
@@ -286,11 +292,8 @@ void LocoNet::LocoNet::sendBytes () {
       //LNDEBUGLN("Loconet network CD Backoff met");
       if (random (1, this->NetPri--) <= 3) {
 	this->showTxBuffer ();
-	LNDEBUG("Loconet network backoff random check passed. TX buffer size = ");
-	LNDEBUG(this->txbuffer.size ());
-	LNDEBUG(" - Transmitting : ");
 	LNPacket p = this->txbuffer.front ();
-	LNDEBUGLN(p.repr ());
+	LNDEBUG("Loconet network backoff random check passed. TX buffer size = %d - Transmitting : $s", this->txbuffer.size (), p.toString().c_str());
 	for (uint i = 0; i < p.len (); i++) {
 	  unsigned char send = p.getByte (i);
 	  this->send (send);

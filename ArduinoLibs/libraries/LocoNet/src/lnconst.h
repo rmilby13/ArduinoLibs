@@ -17,6 +17,7 @@
 #define DigiTraxOpcBusy 0x81
 #define DigiTraxOpcGpoff 0x82
 #define DigiTraxOpcGpon 0x83
+#define DigiTraxOpcIdle 0x85
 #define DigiTraxOpcSwReq 0xB0
 #define DigiTraxOpcInputRep 0xB2
 #define DigiTraxOpcMultiSense 0xD0
@@ -33,6 +34,18 @@ namespace LocoNet {
 		LN_OPC_INPUT_REP, // 0xB2
 		LN_OPC_MULTI_SENSE, // 0xD0
 		LN_OPC_IMM_PACKET // 0xED
+	};
+
+	enum SignalHeadAspect {
+		SignalHeadRed,
+		SignalHeadYellow,
+		SignalHeadGreen,
+		SignalHeadLunar,
+		SignalHeadFlashingRed,
+		SignalHeadFlashingYellow,
+		SignalHeadFlashingGreen,
+		SignalHeadFlashingLunar,
+		SignalHeadDark
 	};
 
 	enum LN_SENSOR_STATUS {

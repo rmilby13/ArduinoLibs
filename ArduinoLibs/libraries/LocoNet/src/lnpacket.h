@@ -5,7 +5,6 @@
 #include "Arduino.h"
 #include <mutex>
 #include "lnconst.h"
-
 //#define DEBUGLNPACKET 1
 //#define TRACELNPACKET 1
 namespace LocoNet {
@@ -16,8 +15,9 @@ namespace LocoNet {
   public:
   	//LNPacket();
   	LNPacket(uint len);
-  	LNPacket(byte dataArray[], uint len);
+  	//LNPacket(byte dataArray[], uint len);
   	LNPacket(packet_data& pdata);
+  	//LNPacket(LNPacket& packet);
   	static LNPacket* factory(packet_data& pdata);
     //LNPacket(packet_data dataArray, uint len);
   	//LNPacket(const LNPacket &packet);
@@ -29,6 +29,7 @@ namespace LocoNet {
   	uint len();
   	virtual LN_OP_CODE get_opcode();
   	static LN_OP_CODE get_opcode(byte firstByte);
+  	static LN_OP_CODE get_opcode(packet_data& pdata);
   	bool valid();
   	byte getByte(uint pos);
   	//uint getaddr();
@@ -49,4 +50,12 @@ protected:
   	byte getLen(LN_OP_CODE opc);
   };
 }
+
+#include "ln_nop.h"
+#include "ln_idle.h"
+#include "ln_busy.h"
+#include "ln_gpoff.h"
+#include "ln_gpon.h"
+#include "ln_sw_req.h"
+#include "ln_imm_packet.h"
 #endif

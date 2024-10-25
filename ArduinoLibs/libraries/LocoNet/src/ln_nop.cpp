@@ -1,5 +1,5 @@
 #include "ln_nop.h"
-
+#include <arduino.h>
 //#define DEBUGLNNOP
 //#define TRACELNNOP
 
@@ -17,10 +17,15 @@
 #endif
 
 LocoNet::LN_NOP::LN_NOP() : LNPacket(2) {
-	this->setByte(0, LN_OPC_UNKNOWN);
+	this->data[0] = DigiTraxOpcNoOp;
 	this->setCheckSum();
 }
 
-LocoNet::LN_NOP::LN_NOP(packet_data &pdata) : LNPacket(pdata){
+LocoNet::LN_NOP::LN_NOP(packet_data &pdata) : LNPacket(pdata) {
 
+}
+
+
+arduino::String LocoNet::LN_NOP::toString() {
+	return LNPacket::toString() + "NOP";
 }
