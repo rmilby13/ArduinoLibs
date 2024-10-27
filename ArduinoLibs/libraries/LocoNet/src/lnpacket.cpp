@@ -151,6 +151,9 @@ LocoNet::LNPacket* LocoNet::LNPacket::factory(packet_data &pdata){
 		case LN_OPC_IMM_PACKET:
 			packet = new LN_IMM_Packet(pdata);
 			break;
+		case LN_OPC_INPUT_REP:
+			packet = new LN_INPUT_REP(pdata);
+			break;
 		default:
 			packet = new LNPacket(pdata);
 	}

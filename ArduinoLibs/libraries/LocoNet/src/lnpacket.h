@@ -58,4 +58,5 @@ protected:
 #include "ln_gpon.h"
 #include "ln_sw_req.h"
 #include "ln_imm_packet.h"
+#include "ln_input_rep.h"
 #endif
