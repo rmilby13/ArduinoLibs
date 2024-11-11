@@ -19,7 +19,11 @@
 #define DigiTraxOpcGpon 0x83
 #define DigiTraxOpcIdle 0x85
 #define DigiTraxOpcSwReq 0xB0
+#define DigiTraxOpcSwRep 0xB1
 #define DigiTraxOpcInputRep 0xB2
+#define DigiTraxOpcLongAck 0xB4
+#define DigiTraxOpcSwState 0xBC
+#define DigiTraxOpcSwAck 0xBD
 #define DigiTraxOpcMultiSense 0xD0
 #define DigiTraxOpcImmPacket 0xED
 #define LOCONET_MAX_PACKET_SIZE 127
@@ -31,7 +35,11 @@ namespace LocoNet {
 		LN_OPC_GPOFF, // 0x82
 		LN_OPC_GPON, // 0x83
 		LN_OPC_SW_REQ, // 0xB0
+		LN_OPC_SW_REP, // 0xB1
 		LN_OPC_INPUT_REP, // 0xB2
+		LN_OPC_LONG_ACK, // 0xB4
+		LN_OPC_SW_STATE, // 0xBC
+		LN_OPC_SW_ACK, // 0xBD
 		LN_OPC_MULTI_SENSE, // 0xD0
 		LN_OPC_IMM_PACKET // 0xED
 	};

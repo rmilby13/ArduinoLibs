@@ -15,16 +15,22 @@
 #else
 #define DEBUG(...)
 #endif
+namespace LocoNet {
 
-LocoNet::LN_BUSY::LN_BUSY() : LNPacket(2) {
-	this->data[0] = DigiTraxOpcBusy;
-	this->setCheckSum();
-}
+	LN_BUSY::LN_BUSY() : LNPacket (2) {
+		this->data[0] = DigiTraxOpcBusy;
+		this->setCheckSum ();
+	}
 
-LocoNet::LN_BUSY::LN_BUSY(packet_data &pdata) : LNPacket(pdata){
+	LN_BUSY::LN_BUSY( packet_data &pdata ) : LNPacket (pdata) {
 
-}
+	}
 
-arduino::String LocoNet::LN_BUSY::toString() {
-	return LNPacket::toString() + "Busy";
+	LN_BUSY::LN_BUSY(LNPacket& packet) : LNPacket(packet) {
+
+	}
+
+	arduino::String LN_BUSY::toString() {
+		return LNPacket::toString () + "Busy";
+	}
 }

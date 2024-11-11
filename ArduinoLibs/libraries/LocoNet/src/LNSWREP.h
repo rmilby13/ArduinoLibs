@@ -1,18 +1,16 @@
-#ifndef LIBRARIES_LOCONET_SRC_LN_SW_REQ_H_
-#define LIBRARIES_LOCONET_SRC_LN_SW_REQ_H_
 #pragma once
+#ifndef LIBRARIES_LOCONET_SRC_LNSWREP_H_
+#define LIBRARIES_LOCONET_SRC_LNSWREP_H_
 
 #include "lnpacket.h"
 #include <Arduino.h>
 namespace LocoNet {
-	class LN_SW_REQ : public LNPacket {
+	class LN_SW_REP : public LNPacket {
 	public:
-		LN_SW_REQ();
-		/*
-		 LN_SW_REQ( byte dataArray[], uint len );
-		 */
-		LN_SW_REQ( packet_data &pdata );
-		LN_SW_REQ( LNPacket &packet );
+		LN_SW_REP();
+		LN_SW_REP( lnaddr address, bool closed, bool active );
+		LN_SW_REP( packet_data &pdata );
+		LN_SW_REP( LNPacket &packet );
 		arduino::String toString();
 
 		lnaddr getAddr();
@@ -25,5 +23,4 @@ namespace LocoNet {
 	private:
 	};
 }
-
-#endif
+#endif /* LIBRARIES_LOCONET_SRC_LNSWREP_H_ */

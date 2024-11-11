@@ -9,6 +9,7 @@ namespace LocoNet {
 	public:
 		LN_NOP();
 		LN_NOP( packet_data &pdata );
+		LN_NOP( LNPacket &packet );
 		arduino::String toString();
 	protected:
 	private:

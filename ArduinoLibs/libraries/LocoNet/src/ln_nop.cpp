@@ -16,16 +16,21 @@
 #define DEBUG(...)
 #endif
 
-LocoNet::LN_NOP::LN_NOP() : LNPacket(2) {
-	this->data[0] = DigiTraxOpcNoOp;
-	this->setCheckSum();
-}
+namespace LocoNet {
+	LN_NOP::LN_NOP() : LNPacket (2) {
+		this->data[0] = DigiTraxOpcNoOp;
+		this->setCheckSum ();
+	}
 
-LocoNet::LN_NOP::LN_NOP(packet_data &pdata) : LNPacket(pdata) {
+	LN_NOP::LN_NOP( packet_data &pdata ) : LNPacket (pdata) {
 
-}
+	}
 
+	LN_NOP::LN_NOP( LNPacket &packet ) : LNPacket (packet) {
 
-arduino::String LocoNet::LN_NOP::toString() {
-	return LNPacket::toString() + "NOP";
+	}
+
+	arduino::String LN_NOP::toString() {
+		return LNPacket::toString () + "NOP";
+	}
 }

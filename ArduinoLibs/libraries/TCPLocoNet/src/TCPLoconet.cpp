@@ -25,7 +25,7 @@ TCPLocoNet::TCPLocoNet () {
 }
 
 int TCPLocoNet::available () {
-  return client.available ();
+  return this->connected() ? client.available () : 0;
 }
 
 int TCPLocoNet::peek () {
@@ -37,11 +37,11 @@ int TCPLocoNet::read () {
 }
 
 size_t TCPLocoNet::write (uint8_t i) {
-  return client.write (i);
+  return this->connected() ? client.write (i) : 0;
 }
 
 size_t TCPLocoNet::write (const uint8_t *buffer, size_t size) {
-  return client.write (buffer, size);
+  return this->connected() ? client.write (buffer, size) : 0;
 }
 
 int TCPLocoNet::availableForWrite () {

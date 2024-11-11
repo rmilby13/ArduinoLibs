@@ -16,15 +16,22 @@
 #define DEBUG(...)
 #endif
 
-LocoNet::LN_IDLE::LN_IDLE() : LNPacket(2) {
-	this->data[0] = DigiTraxOpcIdle;
-	this->setCheckSum();
-}
+namespace LocoNet {
 
-LocoNet::LN_IDLE::LN_IDLE(packet_data &pdata) : LNPacket(pdata) {
+	LN_IDLE::LN_IDLE() : LNPacket (2) {
+		this->data[0] = DigiTraxOpcIdle;
+		this->setCheckSum ();
+	}
 
-}
+	LN_IDLE::LN_IDLE( packet_data &pdata ) : LNPacket (pdata) {
 
-arduino::String LocoNet::LN_IDLE::toString() {
-	return LNPacket::toString() + "IDLE";
+	}
+
+	LN_IDLE::LN_IDLE(LNPacket &packet) : LNPacket(packet){
+
+	}
+
+	arduino::String LN_IDLE::toString() {
+		return LNPacket::toString () + "IDLE";
+	}
 }

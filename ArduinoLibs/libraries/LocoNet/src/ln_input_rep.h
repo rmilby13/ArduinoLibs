@@ -9,15 +9,15 @@ namespace LocoNet {
 	public:
 		LN_INPUT_REP();
 		/*
-		LN_SW_REQ( byte dataArray[], uint len );
-		*/
+		 LN_SW_REQ( byte dataArray[], uint len );
+		 */
 		LN_INPUT_REP( packet_data &pdata );
-		LN_INPUT_REP(LNPacket& packet);
+		LN_INPUT_REP( LNPacket &packet );
 		arduino::String toString();
 
 		lnaddr getAddr();
 		void setAddr( lnaddr address );
-		void setActive(bool active);
+		void setActive( bool active );
 		bool getActive();
 		bool isDS54();
 	protected:

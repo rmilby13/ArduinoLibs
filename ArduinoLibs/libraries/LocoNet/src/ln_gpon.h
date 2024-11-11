@@ -9,6 +9,7 @@ namespace LocoNet {
 	public:
 		LN_GPON();
 		LN_GPON( packet_data &pdata );
+		LN_GPON( LNPacket &packet );
 		arduino::String toString();
 	protected:
 	private:

@@ -16,15 +16,22 @@
 #define DEBUG(...)
 #endif
 
-LocoNet::LN_GPOFF::LN_GPOFF() : LNPacket(2) {
-	this->data[0] = DigiTraxOpcBusy;
-	this->setCheckSum();
-}
+namespace LocoNet {
 
-LocoNet::LN_GPOFF::LN_GPOFF(packet_data &pdata) : LNPacket(pdata){
+	LN_GPOFF::LN_GPOFF() : LNPacket (2) {
+		this->data[0] = DigiTraxOpcBusy;
+		this->setCheckSum ();
+	}
 
-}
+	LN_GPOFF::LN_GPOFF( packet_data &pdata ) : LNPacket (pdata) {
 
-arduino::String LocoNet::LN_GPOFF::toString() {
-	return LNPacket::toString() + "GPOFF";
+	}
+
+	LN_GPOFF::LN_GPOFF( LNPacket &packet ) : LNPacket (packet) {
+
+	}
+
+	arduino::String LN_GPOFF::toString() {
+		return LNPacket::toString () + "GPOFF";
+	}
 }

@@ -9,6 +9,7 @@ namespace LocoNet {
 	public:
 		LN_GPOFF();
 		LN_GPOFF( packet_data &pdata );
+		LN_GPOFF( LNPacket &packet );
 		arduino::String toString();
 	protected:
 	private:

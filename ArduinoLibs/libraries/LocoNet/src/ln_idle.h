@@ -9,6 +9,7 @@ namespace LocoNet {
 	public:
 		LN_IDLE();
 		LN_IDLE( packet_data &pdata );
+		LN_IDLE( LNPacket &packet );
 		arduino::String toString();
 	protected:
 	private:

@@ -15,16 +15,22 @@
 #else
 #define DEBUG(...)
 #endif
+namespace LocoNet {
 
-LocoNet::LN_GPON::LN_GPON() : LNPacket(2) {
-	this->data[0] = DigiTraxOpcBusy;
-	this->setCheckSum();
-}
+	LN_GPON::LN_GPON() : LNPacket (2) {
+		this->data[0] = DigiTraxOpcBusy;
+		this->setCheckSum ();
+	}
 
-LocoNet::LN_GPON::LN_GPON(packet_data &pdata) : LNPacket(pdata){
+	LN_GPON::LN_GPON( packet_data &pdata ) : LNPacket (pdata) {
 
-}
+	}
 
-arduino::String LocoNet::LN_GPON::toString() {
-	return LNPacket::toString() + "GPON";
+	LN_GPON::LN_GPON( LNPacket &packet ) : LNPacket (packet) {
+
+	}
+
+	arduino::String LN_GPON::toString() {
+		return LNPacket::toString () + "GPON";
+	}
 }
