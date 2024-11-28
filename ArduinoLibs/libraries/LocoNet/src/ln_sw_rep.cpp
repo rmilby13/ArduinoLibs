@@ -5,7 +5,7 @@
  *      Author: rmilb
  */
 
-#include "LNSWREP.h"
+#include "ln_sw_rep.h"
 #include <Arduino.h>
 
 //#define DEBUGLNSWREP

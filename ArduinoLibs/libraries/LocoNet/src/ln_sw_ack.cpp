@@ -5,7 +5,7 @@
  *      Author: rmilb
  */
 
-#include "LNSWACK.h"
+#include "ln_sw_ack.h"
 #include "lnconst.h"
 #include <Arduino.h>
 

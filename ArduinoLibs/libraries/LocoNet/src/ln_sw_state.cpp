@@ -5,7 +5,7 @@
  *      Author: rmilb
  */
 
-#include "LNSWState.h"
+#include "ln_sw_state.h"
 
 //#define DEBUGLNSWState
 //#define TRACELNSWState
