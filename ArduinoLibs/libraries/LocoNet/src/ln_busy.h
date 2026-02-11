@@ -1,11 +1,10 @@
 #ifndef LIBRARIES_LOCONET_SRC_LN_BUSY_H_
 #define LIBRARIES_LOCONET_SRC_LN_BUSY_H_
-#pragma once
 
-#include "lnpacket.h"
+#include <ln_packet.h>
 #include "Arduino.h"
 namespace LocoNet {
-	class LN_BUSY : public LocoNet::LNPacket {
+	class LN_BUSY : public LNPacket {
 	public:
 		LN_BUSY();
 		LN_BUSY( packet_data &pdata );

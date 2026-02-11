@@ -2,10 +2,10 @@
 #define LIBRARIES_LOCONET_SRC_LN_GPON_H_
 #pragma once
 
-#include "lnpacket.h"
+#include <ln_packet.h>
 #include "Arduino.h"
 namespace LocoNet {
-	class LN_GPON : public LocoNet::LNPacket {
+	class LN_GPON : public LNPacket {
 	public:
 		LN_GPON();
 		LN_GPON( packet_data &pdata );

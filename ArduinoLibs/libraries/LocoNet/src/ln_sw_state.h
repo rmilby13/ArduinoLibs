@@ -8,7 +8,7 @@
 #ifndef LIBRARIES_LOCONET_SRC_LNSWSTATE_H_
 #define LIBRARIES_LOCONET_SRC_LNSWSTATE_H_
 
-#include "lnpacket.h"
+#include <ln_packet.h>
 #include <Arduino.h>
 namespace LocoNet {
 
@@ -19,8 +19,8 @@ namespace LocoNet {
 		LN_SW_State( LNPacket &packet );
 		virtual ~LN_SW_State();
 		arduino::String toString();
-		lnaddr getAddr();
-		void setAddr( lnaddr address );
+		lnaddr getAddress();
+		void setAddress( lnaddr address );
 	};
 
 } /* namespace LocoNet */

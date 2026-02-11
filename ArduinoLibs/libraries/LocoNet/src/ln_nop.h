@@ -1,11 +1,10 @@
 #ifndef LIBRARIES_LOCONET_SRC_LN_NOP_H_
 #define LIBRARIES_LOCONET_SRC_LN_NOP_H_
-#pragma once
 
-#include "lnpacket.h"
+#include <ln_packet.h>
 #include "Arduino.h"
 namespace LocoNet {
-	class LN_NOP : public LocoNet::LNPacket {
+	class LN_NOP : public LNPacket {
 	public:
 		LN_NOP();
 		LN_NOP( packet_data &pdata );

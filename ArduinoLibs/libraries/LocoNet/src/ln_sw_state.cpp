@@ -43,14 +43,14 @@ namespace LocoNet {
 	}
 
 	arduino::String LN_SW_State::toString() {
-		return LNPacket::toString () + "Request State of Switch " + arduino::String (this->getAddr ());
+		return LNPacket::toString () + "Request State of Switch " + arduino::String (this->getAddress ());
 	}
 
-	lnaddr LN_SW_State::getAddr() {
+	lnaddr LN_SW_State::getAddress() {
 		return ((this->data[2] & 0x0F) << 7) + (this->data[1] & 0x7F) + 1;
 	}
 
-	void LN_SW_State::setAddr( lnaddr address ) {
+	void LN_SW_State::setAddress( lnaddr address ) {
 		lnaddr addr = address;
 		this->data[1] = addr & 0x7F;
 		addr = addr >> 7;

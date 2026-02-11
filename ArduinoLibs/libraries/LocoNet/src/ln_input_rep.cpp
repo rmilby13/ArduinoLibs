@@ -21,7 +21,7 @@ namespace LocoNet {
 
 	LN_INPUT_REP::LN_INPUT_REP() : LNPacket (4) {
 		this->data[0] = DigiTraxOpcSwReq;
-		this->setAddr (1);
+		this->setAddress (1);
 		this->setCheckSum ();
 	}
 
@@ -34,16 +34,16 @@ namespace LocoNet {
 	}
 
 	arduino::String LN_INPUT_REP::toString() {
-		return LNPacket::toString () + "Input Report from Address " + arduino::String (this->getAddr ()) + " currently "
+		return LNPacket::toString () + "Input Report from Address " + arduino::String (this->getAddress ()) + " currently "
 		        + (this->getActive () ? "High" : "Low");
 	}
 
-	lnaddr LN_INPUT_REP::getAddr() {
+	lnaddr LN_INPUT_REP::getAddress() {
 		return ((this->data.at (2) & 0x0F) << 8) + ((this->data.at (1) & 0x7F) << 1) + ((this->data.at (2) & 0x20) >> 5)
 		        + 1;
 	}
 
-	void LN_INPUT_REP::setAddr( lnaddr address ) {
+	void LN_INPUT_REP::setAddress( lnaddr address ) {
 		TRACE("OLD DATA [ %2X %2X ]\n", this->data.at (1), this->data.at (2));
 		lnaddr LNaddr = address - 1;
 		TRACE("LNaddr %d %4X\n", LNaddr, LNaddr);
