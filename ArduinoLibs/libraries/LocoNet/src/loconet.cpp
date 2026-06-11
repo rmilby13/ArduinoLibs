@@ -219,10 +219,12 @@ namespace LocoNet {
 			this->rxbuffer.pop_front ();
 		}UNLOCK(&this->rxbufferlock);
 		LNTRACELN("]*");LNTRACELN("Returning Packet");
-		LNPacket *packet = LNPacket::factory (packbytes);
+		auto packet = LNPacket::factory(packbytes);
 		processPacket (*packet);
 		DEBUG("Returning packet - %s", packet->toString ().c_str ());
-		return *packet;
+		// copy and return by value; unique_ptr will free the heap object automatically
+		LNPacket ret = *packet;
+		return ret;
 	}
 	;
 
@@ -261,7 +263,8 @@ namespace LocoNet {
 	void LocoNet::getBytes() {
 		if (!pioRxFIFOEmpty ()) {
 			TRACE("Getting Bytes");
-			while ((!pioRxFIFOEmpty ()) && (this->rxbuffer.size () > 256)) {
+			// prevent uncontrolled growth of rxbuffer; only push up to a safety threshold
+			while ((!pioRxFIFOEmpty ()) && (this->rxbuffer.size () < 256)) {
 				unsigned char b = this->getByte ();
 				LOCK(&this->rxbufferlock);
 				this->rxbuffer.push_back (b);
@@ -390,15 +393,14 @@ namespace LocoNet {
 	}
 
 	void LocoNet::setGlobalPower( bool gpower ) {
-		LNPacket *p = gpower ? (LNPacket *) new LN_GPON() : (LNPacket *) new LN_GPOFF();
-/*		if (gpower) {
-			LN_GPON *p = new LN_GPON();
-			this->send (p);
+		// avoid heap allocation - create packet on stack and send by reference
+		if (gpower) {
+			LN_GPON p;
+			this->send(p);
 		} else {
-			LN_GPOFF *p = new LN_GPOFF();
-			this->send (p);
-		}*/
-		this->send (*p);
+			LN_GPOFF p;
+			this->send(p);
+		}
 		this->globalPower = gpower;
 	}
 }

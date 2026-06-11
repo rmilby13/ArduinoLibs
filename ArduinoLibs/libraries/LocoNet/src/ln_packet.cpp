@@ -168,96 +168,66 @@ LocoNet::LN_OP_CODE LocoNet::LNPacket::get_opcode(byte firstByte){
 	return oc;
 }
 
-LocoNet::LNPacket* LocoNet::LNPacket::factory(packet_data &pdata){
-	LNPacket* packet;
-	switch (LNPacket::get_opcode(pdata.at(0))){
-		case LN_OPC_NOOP:
-			packet = new LN_NOP(pdata);
-			break;
-		case LN_OPC_SW_REQ:
-			packet = new LN_SW_REQ(pdata);
-			break;
-		case LN_OPC_SW_REP:
-			packet = new LN_SW_REP(pdata);
-			break;
-		case LN_OPC_IMM_PACKET:
-			packet = new LN_IMM_Packet(pdata);
-			break;
-		case LN_OPC_INPUT_REP:
-			packet = new LN_INPUT_REP(pdata);
-			break;
-		case LN_OPC_SW_STATE:
-			packet = new LN_SW_State(pdata);
-			break;
-		case LN_OPC_SW_ACK:
-			packet = new LN_SW_ACK(pdata);
-			break;
-		case LN_OPC_LONG_ACK:
-			packet = new LN_Long_Ack(pdata);
-			break;
-		case LN_OPC_WR_SL_DATA:
-			switch (pdata[2]) {
-				case 0x7B: // Fast Clock Slot Data
-					packet = new LN_FAST_CLOCK_SLOT_DATA(pdata);
-					break;
-				default:
-					// Default to standard SL Data
-					// This is a catch-all for other SL Data packets
-					// that do not have a specific class defined.
-					packet = new LN_WR_SL_DATA(pdata);
-					LNPDEBUGLN("Unknown SL Data Packet, using generic LN_WR_SL_DATA");
-			}
-			break;
-		default:
-			packet = new LNPacket(pdata);
-	}
-	return packet;
+std::unique_ptr<LocoNet::LNPacket> LocoNet::LNPacket::factory(packet_data &pdata){
+    switch (LNPacket::get_opcode(pdata.at(0))){
+        case LN_OPC_NOOP:
+            return std::make_unique<LN_NOP>(pdata);
+        case LN_OPC_SW_REQ:
+            return std::make_unique<LN_SW_REQ>(pdata);
+        case LN_OPC_SW_REP:
+            return std::make_unique<LN_SW_REP>(pdata);
+        case LN_OPC_IMM_PACKET:
+            return std::make_unique<LN_IMM_Packet>(pdata);
+        case LN_OPC_INPUT_REP:
+            return std::make_unique<LN_INPUT_REP>(pdata);
+        case LN_OPC_SW_STATE:
+            return std::make_unique<LN_SW_State>(pdata);
+        case LN_OPC_SW_ACK:
+            return std::make_unique<LN_SW_ACK>(pdata);
+        case LN_OPC_LONG_ACK:
+            return std::make_unique<LN_Long_Ack>(pdata);
+        case LN_OPC_WR_SL_DATA:
+            switch (pdata[2]) {
+                case 0x7B: // Fast Clock Slot Data
+                    return std::make_unique<LN_FAST_CLOCK_SLOT_DATA>(pdata);
+                default:
+                    LNPDEBUGLN("Unknown SL Data Packet, using generic LN_WR_SL_DATA");
+                    return std::make_unique<LN_WR_SL_DATA>(pdata);
+            }
+        default:
+            return std::make_unique<LNPacket>(pdata);
+    }
 }
 
-LocoNet::LNPacket* LocoNet::LNPacket::factory( LNPacket& packet){
-	LNPacket* p;
-	switch (packet.get_opcode()){
-		case LN_OPC_NOOP:
-			p = new LN_NOP(packet);
-			break;
-		case LN_OPC_SW_REQ:
-			p = new LN_SW_REQ(packet);
-			break;
-		case LN_OPC_SW_REP:
-			p = new LN_SW_REP(packet);
-			break;
-		case LN_OPC_IMM_PACKET:
-			p = new LN_IMM_Packet(packet);
-			break;
-		case LN_OPC_INPUT_REP:
-			p = new LN_INPUT_REP(packet);
-			break;
-		case LN_OPC_SW_STATE:
-			p = new LN_SW_State(packet);
-			break;
-		case LN_OPC_SW_ACK:
-			p = new LN_SW_ACK(packet);
-			break;
-		case LN_OPC_LONG_ACK:
-			p = new LN_Long_Ack(packet);
-			break;
-		case LN_OPC_WR_SL_DATA:
-			switch (packet.data.at(2)) {
-				case 0x7B: // Fast Clock Slot Data
-					p = new LN_FAST_CLOCK_SLOT_DATA(packet);
-					break;
-				default:
-					// Default to standard SL Data
-					// This is a catch-all for other SL Data packets
-					// that do not have a specific class defined.
-					LNPDEBUGLN("Unknown SL Data Packet, using generic LN_WR_SL_DATA");
-					p = new LN_WR_SL_DATA(packet);
-			}
-			break;
-		default:
-			p = new LNPacket(packet);
-	}
-	return p;
+std::unique_ptr<LocoNet::LNPacket> LocoNet::LNPacket::factory( LNPacket& packet){
+    switch (packet.get_opcode()){
+        case LN_OPC_NOOP:
+            return std::make_unique<LN_NOP>(packet);
+        case LN_OPC_SW_REQ:
+            return std::make_unique<LN_SW_REQ>(packet);
+        case LN_OPC_SW_REP:
+            return std::make_unique<LN_SW_REP>(packet);
+        case LN_OPC_IMM_PACKET:
+            return std::make_unique<LN_IMM_Packet>(packet);
+        case LN_OPC_INPUT_REP:
+            return std::make_unique<LN_INPUT_REP>(packet);
+        case LN_OPC_SW_STATE:
+            return std::make_unique<LN_SW_State>(packet);
+        case LN_OPC_SW_ACK:
+            return std::make_unique<LN_SW_ACK>(packet);
+        case LN_OPC_LONG_ACK:
+            return std::make_unique<LN_Long_Ack>(packet);
+        case LN_OPC_WR_SL_DATA:
+            switch (packet.data.at(2)) {
+                case 0x7B: // Fast Clock Slot Data
+                    return std::make_unique<LN_FAST_CLOCK_SLOT_DATA>(packet);
+                default:
+                    LNPDEBUGLN("Unknown SL Data Packet, using generic LN_WR_SL_DATA");
+                    return std::make_unique<LN_WR_SL_DATA>(packet);
+            }
+        default:
+            return std::make_unique<LNPacket>(packet);
+    }
 }
 
 uint LocoNet::LNPacket::len() {

@@ -1,7 +1,9 @@
 #ifndef LIBRARIES_LOCONET_SRC_LNPACKET_H_
 #define LIBRARIES_LOCONET_SRC_LNPACKET_H_
 #include "Arduino.h"
+#include <vector>
 #include <mutex>
+#include <memory>
 #include "lnconst.h"
 
 //#define DEBUGLNPACKET 1
@@ -15,8 +17,8 @@ namespace LocoNet {
 		LNPacket( uint len );
 		LNPacket( packet_data &pdata );
 		LNPacket( LN_OP_CODE opc );
-		static LNPacket* factory( packet_data &pdata );
-		static LNPacket* factory( LNPacket& packet);
+		static std::unique_ptr<LNPacket> factory( packet_data &pdata );
+		static std::unique_ptr<LNPacket> factory( LNPacket& packet);
 		virtual ~LNPacket();
 		virtual arduino::String toString();
 		uint static getLen( byte b );
