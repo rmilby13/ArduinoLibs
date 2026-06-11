@@ -1,6 +1,7 @@
 #include "loconet.h"
 #include "lnconst.h"
 #include <arduino.h>
+#include <ln_packets.h>
 LocoNet::LocoNet loconet;
 
 //#define DEBUGLOCONET
@@ -218,10 +219,12 @@ namespace LocoNet {
 			this->rxbuffer.pop_front ();
 		}UNLOCK(&this->rxbufferlock);
 		LNTRACELN("]*");LNTRACELN("Returning Packet");
-		LNPacket *packet = LNPacket::factory (packbytes);
+		auto packet = LNPacket::factory(packbytes);
 		processPacket (*packet);
 		DEBUG("Returning packet - %s", packet->toString ().c_str ());
-		return *packet;
+		// copy and return by value; unique_ptr will free the heap object automatically
+		LNPacket ret = *packet;
+		return ret;
 	}
 	;
 
@@ -260,7 +263,8 @@ namespace LocoNet {
 	void LocoNet::getBytes() {
 		if (!pioRxFIFOEmpty ()) {
 			TRACE("Getting Bytes");
-			while ((!pioRxFIFOEmpty ()) && (this->rxbuffer.size () > 256)) {
+			// prevent uncontrolled growth of rxbuffer; only push up to a safety threshold
+			while ((!pioRxFIFOEmpty ()) && (this->rxbuffer.size () < 256)) {
 				unsigned char b = this->getByte ();
 				LOCK(&this->rxbufferlock);
 				this->rxbuffer.push_back (b);
@@ -325,11 +329,11 @@ namespace LocoNet {
 			//LN_SWITCH_STATUS switchstatus = LN_SW_UNDEF;
 			switch (packet.get_opcode ()) {
 				case LN_OPC_INPUT_REP:
-					this->ssm[((LN_INPUT_REP) packet).getAddr ()] =
+					this->ssm[((LN_INPUT_REP) packet).getAddress ()] =
 					        ((LN_INPUT_REP) packet).getActive () ? LN_SEN_ACTIVE : LN_SEN_INACTIVE;
 					break;
 				case LN_OPC_SW_REQ:
-					this->swsm[((LN_SW_REQ) packet).getAddr ()] =
+					this->swsm[((LN_SW_REQ) packet).getAddress ()] =
 					        (((LN_SW_REQ) packet).getClosed ()) ?
 					                ((((LN_SW_REQ) packet).getActive ()) ? LN_SW_CLOSED_ACTIVE : LN_SW_CLOSED_INACTIVE) :
 					                ((((LN_SW_REQ) packet).getActive ()) ? LN_SW_THROWN_ACTIVE : LN_SW_THROWN_INACTIVE);
@@ -389,12 +393,13 @@ namespace LocoNet {
 	}
 
 	void LocoNet::setGlobalPower( bool gpower ) {
+		// avoid heap allocation - create packet on stack and send by reference
 		if (gpower) {
 			LN_GPON p;
-			this->send (p);
+			this->send(p);
 		} else {
 			LN_GPOFF p;
-			this->send (p);
+			this->send(p);
 		}
 		this->globalPower = gpower;
 	}

@@ -8,7 +8,7 @@
 #ifndef LIBRARIES_LOCONET_SRC_LNLONGACK_H_
 #define LIBRARIES_LOCONET_SRC_LNLONGACK_H_
 
-#include "lnpacket.h"
+#include <ln_packet.h>
 #include <Arduino.h>
 namespace LocoNet {
 

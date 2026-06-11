@@ -1,5 +1,7 @@
-#include "lnpacket.h"
+#include <ln_packet.h>
 #include "Arduino.h"
+//
+#include "ln_packets.h"
 //#define TRACELNPACKET
 #ifdef DEBUGLNPACKET
 #define LNPDEBUG(...) Serial.printf("%s:%d:\t",__FILE__,__LINE__); Serial.print(__VA_ARGS__)
@@ -156,6 +158,9 @@ LocoNet::LN_OP_CODE LocoNet::LNPacket::get_opcode(byte firstByte){
 		case DigiTraxOpcLongAck:
 			oc = LN_OPC_LONG_ACK;
 			break;
+		case DigiTraxOpcWrSlData:
+			oc = LN_OPC_WR_SL_DATA;
+			break;
 		default:
 			oc = LocoNet::LN_OPC_UNKNOWN;
 			break;
@@ -163,70 +168,66 @@ LocoNet::LN_OP_CODE LocoNet::LNPacket::get_opcode(byte firstByte){
 	return oc;
 }
 
-LocoNet::LNPacket* LocoNet::LNPacket::factory(packet_data &pdata){
-	LNPacket* packet;
-	switch (LNPacket::get_opcode(pdata.at(0))){
-		case LN_OPC_NOOP:
-			packet = new LN_NOP(pdata);
-			break;
-		case LN_OPC_SW_REQ:
-			packet = new LN_SW_REQ(pdata);
-			break;
-		case LN_OPC_SW_REP:
-			packet = new LN_SW_REP(pdata);
-			break;
-		case LN_OPC_IMM_PACKET:
-			packet = new LN_IMM_Packet(pdata);
-			break;
-		case LN_OPC_INPUT_REP:
-			packet = new LN_INPUT_REP(pdata);
-			break;
-		case LN_OPC_SW_STATE:
-			packet = new LN_SW_State(pdata);
-			break;
-		case LN_OPC_SW_ACK:
-			packet = new LN_SW_ACK(pdata);
-			break;
-		case LN_OPC_LONG_ACK:
-			packet = new LN_Long_Ack(pdata);
-			break;
-		default:
-			packet = new LNPacket(pdata);
-	}
-	return packet;
+std::unique_ptr<LocoNet::LNPacket> LocoNet::LNPacket::factory(packet_data &pdata){
+    switch (LNPacket::get_opcode(pdata.at(0))){
+        case LN_OPC_NOOP:
+            return std::make_unique<LN_NOP>(pdata);
+        case LN_OPC_SW_REQ:
+            return std::make_unique<LN_SW_REQ>(pdata);
+        case LN_OPC_SW_REP:
+            return std::make_unique<LN_SW_REP>(pdata);
+        case LN_OPC_IMM_PACKET:
+            return std::make_unique<LN_IMM_Packet>(pdata);
+        case LN_OPC_INPUT_REP:
+            return std::make_unique<LN_INPUT_REP>(pdata);
+        case LN_OPC_SW_STATE:
+            return std::make_unique<LN_SW_State>(pdata);
+        case LN_OPC_SW_ACK:
+            return std::make_unique<LN_SW_ACK>(pdata);
+        case LN_OPC_LONG_ACK:
+            return std::make_unique<LN_Long_Ack>(pdata);
+        case LN_OPC_WR_SL_DATA:
+            switch (pdata[2]) {
+                case 0x7B: // Fast Clock Slot Data
+                    return std::make_unique<LN_FAST_CLOCK_SLOT_DATA>(pdata);
+                default:
+                    LNPDEBUGLN("Unknown SL Data Packet, using generic LN_WR_SL_DATA");
+                    return std::make_unique<LN_WR_SL_DATA>(pdata);
+            }
+        default:
+            return std::make_unique<LNPacket>(pdata);
+    }
 }
 
-LocoNet::LNPacket* LocoNet::LNPacket::factory( LNPacket& packet){
-	LNPacket* p;
-	switch (packet.get_opcode()){
-		case LN_OPC_NOOP:
-			p = new LN_NOP(packet);
-			break;
-		case LN_OPC_SW_REQ:
-			p = new LN_SW_REQ(packet);
-			break;
-		case LN_OPC_SW_REP:
-			p = new LN_SW_REP(packet);
-			break;
-		case LN_OPC_IMM_PACKET:
-			p = new LN_IMM_Packet(packet);
-			break;
-		case LN_OPC_INPUT_REP:
-			p = new LN_INPUT_REP(packet);
-			break;
-		case LN_OPC_SW_STATE:
-			p = new LN_SW_State(packet);
-			break;
-		case LN_OPC_SW_ACK:
-			p = new LN_SW_ACK(packet);
-			break;
-		case LN_OPC_LONG_ACK:
-			p = new LN_Long_Ack(packet);
-			break;
-		default:
-			p = new LNPacket(packet);
-	}
-	return p;
+std::unique_ptr<LocoNet::LNPacket> LocoNet::LNPacket::factory( LNPacket& packet){
+    switch (packet.get_opcode()){
+        case LN_OPC_NOOP:
+            return std::make_unique<LN_NOP>(packet);
+        case LN_OPC_SW_REQ:
+            return std::make_unique<LN_SW_REQ>(packet);
+        case LN_OPC_SW_REP:
+            return std::make_unique<LN_SW_REP>(packet);
+        case LN_OPC_IMM_PACKET:
+            return std::make_unique<LN_IMM_Packet>(packet);
+        case LN_OPC_INPUT_REP:
+            return std::make_unique<LN_INPUT_REP>(packet);
+        case LN_OPC_SW_STATE:
+            return std::make_unique<LN_SW_State>(packet);
+        case LN_OPC_SW_ACK:
+            return std::make_unique<LN_SW_ACK>(packet);
+        case LN_OPC_LONG_ACK:
+            return std::make_unique<LN_Long_Ack>(packet);
+        case LN_OPC_WR_SL_DATA:
+            switch (packet.data.at(2)) {
+                case 0x7B: // Fast Clock Slot Data
+                    return std::make_unique<LN_FAST_CLOCK_SLOT_DATA>(packet);
+                default:
+                    LNPDEBUGLN("Unknown SL Data Packet, using generic LN_WR_SL_DATA");
+                    return std::make_unique<LN_WR_SL_DATA>(packet);
+            }
+        default:
+            return std::make_unique<LNPacket>(packet);
+    }
 }
 
 uint LocoNet::LNPacket::len() {
@@ -404,7 +405,7 @@ uint LocoNet::LNPacket::getLen( byte b ) {
 	byte h = b & 224;
 	switch (h) {
 		case 0:
-			ret = LOCONET_MAX_PACKET_SIZE;
+			ret = 0;
 			break;
 		case 128:
 			ret = 2;
@@ -416,9 +417,18 @@ uint LocoNet::LNPacket::getLen( byte b ) {
 			ret = 6;
 			break;
 		default:
-			ret = LOCONET_MAX_PACKET_SIZE;
-			LNPDEBUGLN("unknown PacketSize");
-			break;
+			switch (b) {
+				case DigiTraxOpcImmPacket:
+					ret = 11;
+					break;
+				case DigiTraxOpcWrSlData:
+					ret = 14;
+					break;
+				default:
+					ret = LOCONET_MAX_PACKET_SIZE;
+					LNPDEBUGLN("unknown PacketSize");
+					break;
+			}
 	}
 	return ret;
 }
@@ -428,28 +438,31 @@ byte LocoNet::LNPacket::getLen( LN_OP_CODE opc ) {
 	byte ret;
 	switch (opc) {
 		case LN_OPC_NOOP:
-			ret = this->getLen (DigiTraxOpcNoOp);
+			ret = LNPacket::getLen (DigiTraxOpcNoOp);
 			break;
 		case LN_OPC_BUSY:
-			ret = this->getLen (DigiTraxOpcBusy);
+			ret = LNPacket::getLen (DigiTraxOpcBusy);
 			break;
 		case LN_OPC_GPOFF:
-			ret = this->getLen (DigiTraxOpcGpoff);
+			ret = LNPacket::getLen (DigiTraxOpcGpoff);
 			break;
 		case LN_OPC_GPON:
-			ret = this->getLen (DigiTraxOpcGpon);
+			ret = LNPacket::getLen (DigiTraxOpcGpon);
 			break;
 		case LN_OPC_SW_REQ:
-			ret = this->getLen (DigiTraxOpcSwReq);
+			ret = LNPacket::getLen (DigiTraxOpcSwReq);
 			break;
 		case LN_OPC_SW_REP:
-			ret = this->getLen (DigiTraxOpcSwRep);
+			ret = LNPacket::getLen (DigiTraxOpcSwRep);
 			break;
 		case LN_OPC_INPUT_REP:
-			ret = this->getLen (DigiTraxOpcInputRep);
+			ret = LNPacket::getLen (DigiTraxOpcInputRep);
 			break;
 		case LN_OPC_IMM_PACKET:
-			ret = 0xB;
+			ret = LNPacket::getLen (DigiTraxOpcImmPacket);
+			break;
+		case LN_OPC_SW_STATE:
+			ret = LNPacket::getLen (DigiTraxOpcWrSlData);
 			break;
 		default:
 			ret = LOCONET_MAX_PACKET_SIZE;
@@ -457,4 +470,4 @@ byte LocoNet::LNPacket::getLen( LN_OP_CODE opc ) {
 	}
 	return ret;
 }
-
+;

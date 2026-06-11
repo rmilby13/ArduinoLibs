@@ -21,7 +21,7 @@
 namespace LocoNet {
 	LN_SW_REQ::LN_SW_REQ() : LNPacket (4) {
 		this->data[0] = DigiTraxOpcSwReq;
-		this->setAddr (1);
+		this->setAddress (1);
 		this->setCheckSum ();
 	}
 
@@ -34,16 +34,16 @@ namespace LocoNet {
 	}
 
 	arduino::String LN_SW_REQ::toString() {
-		return LNPacket::toString () + "Requesting Switch at " + arduino::String (this->getAddr ()) + " to "
+		return LNPacket::toString () + "Requesting Switch at " + arduino::String (this->getAddress ()) + " to "
 		        + (this->getClosed () ? "Closed" : "Thrown") + " Output " + (this->getActive () ? "Active" : "Inactive");
 	}
 
-	lnaddr LN_SW_REQ::getAddr() {
+	lnaddr LN_SW_REQ::getAddress() {
 		return ((this->data[2] & 0x0F) << 7) + (this->data[1] & 0x7F) + 1;
 	}
 
-	void LN_SW_REQ::setAddr( lnaddr address ) {
-		lnaddr addr = address;
+	void LN_SW_REQ::setAddress( lnaddr address ) {
+		lnaddr addr = address -1;
 		this->data[1] = addr & 0x7F;
 		addr = addr >> 7;
 		addr = addr & 0x0F;

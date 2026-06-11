@@ -19,6 +19,7 @@
 
 void Console::initConsole( arduino::Stream *stream ) {
 	this->cmdBuffer = "";
+	this->cmdBuffer.reserve(128); // reduce reallocations and heap fragmentation
 	this->pendingCommands.clear ();
 //  mutex_init (&this->bufferLock);
 	mutex_init (&this->commandLock);
@@ -65,9 +66,17 @@ ConsoleCommand::ConsoleCommand( arduino::String cmdBuffer ) {
 	arduino::String cmd = cmdBuffer;
 	cmd.trim ();
 	while (cmd.length () > 0) {
-		this->args.push_back (cmd.substring (0, cmd.indexOf (" ")));
-		cmd = cmd.substring (cmd.indexOf (" "));
-		cmd.trim ();
+		int pos = cmd.indexOf(" ");
+		if (pos < 0) {
+			// no more separators - push whole remainder and exit
+			this->args.push_back(cmd);
+			break;
+		} else {
+			this->args.push_back (cmd.substring (0, pos));
+			// skip the separator and trim leading spaces
+			cmd = cmd.substring (pos + 1);
+			cmd.trim ();
+		}
 	}
 }
 arduino::String ConsoleCommand::command() {
@@ -110,7 +119,7 @@ bool Console::cmdAvailable() {
 ConsoleCommand Console::getCommand() {
 	LOCK(&this->commandLock);
 	ConsoleCommand cmd = this->pendingCommands.front ();
-	this->pendingCommands.pop_back ();
+	this->pendingCommands.pop_front ();
 	UNLOCK(&this->commandLock);
 	return cmd;
 }

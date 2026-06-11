@@ -44,15 +44,15 @@ namespace LocoNet {
 	}
 
 	arduino::String LN_SW_ACK::toString(){
-		return LNPacket::toString() + "Requesting Switch at " + arduino::String(this->getAddr()) + " to " + (this->getClosed()? "Closed" : "Thrown") + " Output " + (this->getActive() ? "Active" : "Inactive") + " with acknowledgment.";
+		return LNPacket::toString() + "Requesting Switch at " + arduino::String(this->getAddress()) + " to " + (this->getClosed()? "Closed" : "Thrown") + " Output " + (this->getActive() ? "Active" : "Inactive") + " with acknowledgment.";
 	}
 
 
-	lnaddr LN_SW_ACK::getAddr() {
+	lnaddr LN_SW_ACK::getAddress() {
 		return ((this->data[2] & 0x0F) << 7) + (this->data[1] & 0x7F) + 1;
 	}
 
-	void LN_SW_ACK::setAddr( lnaddr address ) {
+	void LN_SW_ACK::setAddress( lnaddr address ) {
 		lnaddr addr = address;
 		this->data[1] = addr & 0x7F;
 		addr = addr >> 7;

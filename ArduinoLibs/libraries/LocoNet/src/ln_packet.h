@@ -1,10 +1,11 @@
 #ifndef LIBRARIES_LOCONET_SRC_LNPACKET_H_
 #define LIBRARIES_LOCONET_SRC_LNPACKET_H_
-#pragma once
-
 #include "Arduino.h"
+#include <vector>
 #include <mutex>
+#include <memory>
 #include "lnconst.h"
+
 //#define DEBUGLNPACKET 1
 //#define TRACELNPACKET 1
 namespace LocoNet {
@@ -16,8 +17,8 @@ namespace LocoNet {
 		LNPacket( uint len );
 		LNPacket( packet_data &pdata );
 		LNPacket( LN_OP_CODE opc );
-		static LNPacket* factory( packet_data &pdata );
-		static LNPacket* factory( LNPacket& packet);
+		static std::unique_ptr<LNPacket> factory( packet_data &pdata );
+		static std::unique_ptr<LNPacket> factory( LNPacket& packet);
 		virtual ~LNPacket();
 		virtual arduino::String toString();
 		uint static getLen( byte b );
@@ -36,20 +37,8 @@ namespace LocoNet {
 		//byte data[LOCONET_MAX_PACKET_SIZE];
 //  	uint len;
 		//byte getLen(byte b);
-		byte getLen( LN_OP_CODE opc );
+		byte static getLen( LN_OP_CODE opc );
 	};
 }
 
-#include "ln_nop.h"
-#include "ln_idle.h"
-#include "ln_busy.h"
-#include "ln_gpoff.h"
-#include "ln_gpon.h"
-#include "ln_sw_rep.h"
-#include "ln_sw_req.h"
-#include "ln_imm_packet.h"
-#include "ln_input_rep.h"
-#include "ln_sw_state.h"
-#include "ln_sw_ack.h"
-#include "ln_long_ack.h"
 #endif

@@ -2,7 +2,7 @@
 #define LIBRARIES_LOCONET_SRC_LN_SW_REQ_H_
 #pragma once
 
-#include "lnpacket.h"
+#include <ln_packet.h>
 #include <Arduino.h>
 namespace LocoNet {
 	class LN_SW_REQ : public LNPacket {
@@ -15,8 +15,8 @@ namespace LocoNet {
 		LN_SW_REQ( LNPacket &packet );
 		arduino::String toString();
 
-		lnaddr getAddr();
-		void setAddr( lnaddr address );
+		lnaddr getAddress();
+		void setAddress( lnaddr address );
 		void setClosed( bool closed );
 		bool getClosed();
 		void setActive( bool active );

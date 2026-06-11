@@ -24,7 +24,7 @@ namespace LocoNet {
 		this->data[1] = 0x0B;
 		this->data[2] = 0x7F;
 		this->data[6] = 0x01;
-		this->setAddr (1);
+		this->setAddress (1);
 		this->setCheckSum ();
 	}
 
@@ -69,7 +69,7 @@ namespace LocoNet {
 			default:
 				s = "unknown";
 		}
-		return LNPacket::toString () + " IMM Packet address: " + arduino::String (this->getAddr ()) + " - " + s;
+		return LNPacket::toString () + " IMM Packet address: " + arduino::String (this->getAddress ()) + " - " + s;
 	}
 
 	LocoNet::SignalHeadAspect LN_IMM_Packet::getAspect() {
@@ -77,7 +77,18 @@ namespace LocoNet {
 		return (SignalHeadAspect) this->data[7];
 	}
 
-	lnaddr LN_IMM_Packet::getAddr() {
+
+	void LN_IMM_Packet::setAspect( SignalHeadAspect aspect ) {
+		DEBUG("Set Aspect to %d", aspect);
+		if (aspect < SignalHeadRed || aspect > SignalHeadFlashingLunar) {
+			DEBUG("Invalid aspect %d", aspect);
+			return;
+		}
+		this->data[7] = (byte) aspect;
+		this->setCheckSum ();
+	}
+
+	lnaddr LN_IMM_Packet::getAddress() {
 		TRACE("%X %X", this->data[5], this->data[6]);
 		lnaddr ret = 1;
 		lnaddr t;
@@ -95,7 +106,7 @@ namespace LocoNet {
 		return ret;
 	}
 
-	void LN_IMM_Packet::setAddr( lnaddr address ) {
+	void LN_IMM_Packet::setAddress( lnaddr address ) {
 		TRACE("Setting address to %d", address);
 		lnaddr addr = address - 1;
 		byte im1 = (this->data[5] & 0x40) | ((addr & 0xFC) >> 2);
@@ -104,5 +115,6 @@ namespace LocoNet {
 		this->data[6] = im2;
 		this->setCheckSum ();
 	}
+
 
 }

@@ -2,7 +2,7 @@
 #define LIBRARIES_LOCONET_SRC_LN_INPUT_REP_H_
 #pragma once
 
-#include "lnpacket.h"
+#include <ln_packet.h>
 #include <Arduino.h>
 namespace LocoNet {
 	class LN_INPUT_REP : public LNPacket {
@@ -15,8 +15,8 @@ namespace LocoNet {
 		LN_INPUT_REP( LNPacket &packet );
 		arduino::String toString();
 
-		lnaddr getAddr();
-		void setAddr( lnaddr address );
+		lnaddr getAddress();
+		void setAddress( lnaddr address );
 		void setActive( bool active );
 		bool getActive();
 		bool isDS54();

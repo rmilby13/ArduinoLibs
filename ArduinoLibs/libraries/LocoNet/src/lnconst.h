@@ -26,6 +26,7 @@
 #define DigiTraxOpcSwAck 0xBD
 #define DigiTraxOpcMultiSense 0xD0
 #define DigiTraxOpcImmPacket 0xED
+#define DigiTraxOpcWrSlData 0xEF
 #define LOCONET_MAX_PACKET_SIZE 127
 
 namespace LocoNet {
@@ -41,7 +42,8 @@ namespace LocoNet {
 		LN_OPC_SW_STATE, // 0xBC
 		LN_OPC_SW_ACK, // 0xBD
 		LN_OPC_MULTI_SENSE, // 0xD0
-		LN_OPC_IMM_PACKET // 0xED
+		LN_OPC_IMM_PACKET, // 0xED
+		LN_OPC_WR_SL_DATA // 0XEF
 	};
 
 	enum SignalHeadAspect {

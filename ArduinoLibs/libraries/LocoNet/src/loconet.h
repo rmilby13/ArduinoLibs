@@ -12,10 +12,11 @@
 
 #include <arduino.h>
 #include <lnconst.h>
-#include <lnpacket.h>
+#include <ln_packet.h>
 #include <map>
 #include <deque>
 #include <console.h>
+#include "loconet.pio.h"
 
 #ifdef ARDUINO_ARCH_RP2040
 #define LOCONET_RX_PIN 24
@@ -28,8 +29,8 @@
 #define LOCONET_PIO_CLK_DIV 100000
 #define LOCONET_RX_BUFFER_SIZE 255
 #define LOCONET_TX_BUFFER_SIZE 40
-#include "loconet.pio.h"
 #endif
+
 namespace LocoNet {
 
 	typedef std::deque<LNPacket> packet_queue;
