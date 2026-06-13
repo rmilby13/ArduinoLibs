@@ -1,0 +1,11 @@
+- OPC code: 0xBC (SW_STATE)
+- Packet length: 4 bytes
+  - byte 0: 0xBC (opcode)
+  - byte 1: address low 7 bits
+  - byte 2: address high bits in low nibble; other bits reserved/flags
+  - byte 3: checksum
+- Purpose: Request or communicate the state of a switch (addressed).
+- Implemented by: src/ln_sw_state.h, src/ln_sw_state.cpp
+- Class: LocoNet::LN_SW_State (inherits LNPacket)
+- Reference: getAddress()/setAddress() encoding in ln_sw_state.cpp
+- Spec reference: "OPC_SW_STATE 0xBC — Request state of switch" (loconet ln-pe-en 4-byte opcodes table).

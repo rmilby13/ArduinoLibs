@@ -1,0 +1,13 @@
+- OPC code: 0xB2 (INPUT_REP, Input Report)
+- Packet length: 4 bytes
+  - byte 0: 0xB2 (opcode)
+  - byte 1/2: encoded address and flags
+    - address = ((data[2] & 0x0F) << 8) + ((data[1] & 0x7F) << 1) + ((data[2] & 0x20) >> 5) + 1
+    - bit4 of data[2] (0x10) = active flag
+  - byte 3: checksum
+- Purpose: Reports state of an input (sensor/contact).
+- Implemented by: src/ln_input_rep.h, src/ln_input_rep.cpp
+- Class: LocoNet::LN_INPUT_REP (inherits LNPacket)
+- API highlights: getAddress(), setAddress(), setActive()/getActive(), isDS54().
+- Reference: ln_input_rep.cpp contains address/flag encoding and helpers.
+- Spec reference: "OPC_INPUT_REP 0xB2 — General sensor input codes" (loconet ln-pe-en 4-byte opcodes table).

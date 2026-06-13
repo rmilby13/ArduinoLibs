@@ -1,0 +1,9 @@
+- OPC code: 0xB8 (UNLINK_SLOTS)
+- Packet length: 4 bytes
+  - byte0: 0xB8
+  - byte1: SL1
+  - byte2: SL2
+  - byte3: checksum
+- Purpose: Unlink SL1 from SL2.
+- Parameters: SL1, SL2 (0..127)
+- Implementation notes: Not implemented. Expect OPC_SL_RD_DATA replies.

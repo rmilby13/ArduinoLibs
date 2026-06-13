@@ -1,0 +1,10 @@
+- OPC code: 0xD4 (UHLI_FUN / Uhlenbrock extensions)
+- Packet length: 6 bytes
+  - byte0: 0xD4
+  - byte1: 0x20 (Arg1 per spec)
+  - byte2: slot
+  - byte3: function group
+  - byte4: function
+  - byte5: checksum
+- Purpose: Extended function control for Uhlenbrock devices (functions 9-28 and others).
+- Implementation notes: Not implemented; treat similar to IMM_PACKET payloads when parsing or create dedicated LN_UHLI_FUN class.

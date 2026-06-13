@@ -1,0 +1,8 @@
+- OPC code: 0xA0 (LOCO_SPD)
+- Packet length: 4 bytes
+  - byte0: 0xA0
+  - byte1: SLOT
+  - byte2: SPD
+  - byte3: checksum
+- Purpose: Set slot speed (single-field update). SPD encoding: 0x00=STOP, 0x01=EMERGENCY STOP, 0x02-0x7F increasing speed up to max.
+- Implementation notes: Not implemented; consider as a convenience over full WR_SL_DATA writes when only speed changes.

@@ -1,0 +1,12 @@
+- OPC code: 0xB0 (SW_REQ, Switch Request)
+- Packet length: 4 bytes
+  - byte 0: 0xB0 (opcode)
+  - byte 1: address low 7 bits (A0..A6)
+  - byte 2: address high 4 bits in bits 0-3; bit4=active flag; bit5=closed flag; upper nibble preserved
+  - byte 3: checksum
+- Purpose: Request to change or query a turnout/switch.
+- Implemented by: src/ln_sw_req.h, src/ln_sw_req.cpp
+- Class: LocoNet::LN_SW_REQ (inherits LNPacket)
+- API highlights: getAddress(), setAddress(), setClosed()/getClosed(), setActive()/getActive(), toString().
+- Reference: getAddress()/setAddress() encoding in ln_sw_req.cpp
+- Spec reference: "OPC_SW_REQ 0xB0 — Request switch function" (loconet ln-pe-en 4-byte opcodes table).

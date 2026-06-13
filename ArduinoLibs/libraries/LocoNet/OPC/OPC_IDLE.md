@@ -1,0 +1,9 @@
+- OPC code: 0x85 (IDLE)
+- Packet length: 2 bytes
+  - byte 0: 0x85 (opcode)
+  - byte 1: checksum
+- Purpose: Network idle/heartbeat indicator.
+- Implemented by: src/ln_idle.h, src/ln_idle.cpp
+- Class: LocoNet::LN_IDLE (inherits LNPacket)
+- Notes: Used to indicate idle state on the LocoNet bus; toString() implemented for diagnostics.
+- Spec reference: "OPC_IDLE 0x85 — FORCE IDLE state, B'cast emerg. STOP" (loconet ln-pe-en opcode summary).

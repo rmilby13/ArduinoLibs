@@ -1,0 +1,10 @@
+- OPC code: 0xD0 (MULTI_SENSE)
+- Packet length: 6 bytes (example)
+  - byte0: 0xD0
+  - byte1: type
+  - byte2: zone+section
+  - byte3: addr_hi
+  - byte4: addr_lo
+  - byte5: checksum
+- Purpose: Power management and transponding information. ARG fields indicate type, zone, section and address parts.
+- Implementation notes: Not implemented. Refer to lnpe-parms transponding section for ARG meanings.

@@ -1,0 +1,9 @@
+- OPC code: 0xB6 (CONSIST_FUNC)
+- Packet length: 4 bytes
+  - byte0: 0xB6
+  - byte1: SLOT
+  - byte2: DIRF (direction + function bits)
+  - byte3: checksum
+- Purpose: Set function bits in a consist uplink element (affects multiple slots when linked).
+- Parameters: DIRF encodes direction and F0..F4 function bits.
+- Implementation notes: Not implemented.

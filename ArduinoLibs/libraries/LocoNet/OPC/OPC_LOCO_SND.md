@@ -1,0 +1,8 @@
+- OPC code: 0xA2 (LOCO_SND)
+- Packet length: 4 bytes
+  - byte0: 0xA2
+  - byte1: SLOT
+  - byte2: SND (sound/function bits)
+  - byte3: checksum
+- Purpose: Set slot sound/function higher-order bits.
+- Implementation notes: Not implemented.

@@ -1,0 +1,6 @@
+- OPC code: 0xE4 (LISSY / WHEELCNT / RFID reports)
+- Packet length: variable (examples: 0x08, 0x0C, 0x0E depending on subtype/count)
+- Common layout: [0xE4][COUNT][TYPE][addr_hi][addr_lo][data...][CKSUM]
+- Purpose: Peripheral reports for Lissy IR, wheel counters, RFID tags and related sensors.
+- Subtypes: 0x00, 0x40, 0x41, etc. indicate specific report formats and counts.
+- Implementation notes: Implement as LN_E4_Report with subtype dispatching; parse TYPE to determine field meanings (addr, counts, RFID payloads).

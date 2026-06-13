@@ -1,0 +1,10 @@
+- OPC code: 0xBF (LOCO_ADR)
+- Packet length: 4 bytes
+  - byte 0: 0xBF
+  - byte 1: 0x00
+  - byte 2: ADR (7-bit loco address or low address byte)
+  - byte 3: checksum
+- Purpose: Request a locomotive address allocation/lookup. Master replies with OPC_SL_RD_DATA (0xE7) with slot contents or with OPC_LONG_ACK on failure.
+- Parameters: ADR: 7-bit short address; when ADR2 used, long addresses are encoded in slot read responses.
+- Spec reference: OPC_LOCO_ADR in ln-pe-en/loconetpersonal edition.
+- Implementation notes: Not implemented in this library. Add LN_LOCO_ADR and ensure factory maps 0xBF to it. Validate reply parsing of 0xE7 responses.

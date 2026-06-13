@@ -1,0 +1,12 @@
+- OPC code: 0xED (IMM_PACKET)
+- Packet length: 11 bytes (special-case length)
+  - byte 0: 0xED (opcode)
+  - byte 1: payload length / subtype (implementation sets 0x0B by default)
+  - byte 2: subtype/opcode (implementation sets 0x7F by default in LNPacket ctor)
+  - bytes 3..9: payload (implementation-specific)
+  - byte 10: checksum
+- Purpose: Encapsulates immediate small commands or parameter blocks.
+- Implemented by: src/ln_imm_packet.h, src/ln_imm_packet.cpp
+- Class: LocoNet::LN_IMM_Packet (inherits LNPacket)
+- Notes: See local protocol PDFs for IMM_PACKET sub-formats; code initializes bytes 1/2 in LNPacket ctor.
+- Spec reference: "OPC_IMM_PACKET 0xED — Immediate codes / special-purpose small payload packets" (loconet ln-pe-en variable byte opcodes).

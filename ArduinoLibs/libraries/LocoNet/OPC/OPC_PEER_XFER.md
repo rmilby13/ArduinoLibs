@@ -1,0 +1,13 @@
+- OPC code: 0xE5 (PEER_XFER)
+- Packet length: 16 bytes (COUNT=0x10)
+  - byte0: 0xE5
+  - byte1: 0x10
+  - byte2: SRC
+  - byte3: DSTL
+  - byte4: DSTH
+  - byte5: PXCT1
+  - byte6..13: D1..D8 (payload)
+  - byte14: PXCT2 (optional per spec variants)
+  - byte15: checksum
+- Purpose: Move 8 bytes peer-to-peer (SRC->DST). SRC values 0x70-0x7E reserved.
+- Implementation notes: Not implemented; consult ln-pe-en E5 description for exact PXCT usage and payload interpretation.
