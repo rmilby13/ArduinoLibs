@@ -19,3 +19,23 @@
 - API highlights: getRate()/setRate(), getFracMin()/setFracMin(), getMinute()/setMinute(), getHour()/setHour(), getDay()/setDay(), getSlot()/setSlot(), getClockControl()/setClockControl(), isValid()/setValid(), isSynchronized()/setSynchronized(), isRunning()/setRunning(), getDeviceId1()/getDeviceId2().
 - Reference: ln_fast_clock_slot_data.cpp documents encoding and helper behavior (minute/hour stored as 256-value).
 - Spec reference: "OPC_WR_SL_DATA 0xEF with subtype 0x7B — Write Fast Clock slot data" (loconet ln-pe-en variable byte opcodes table). See lines describing CLK_RATE, FRAC_MIN, 256-MINS_60 and 256-HRS_24 encodings in the spec.
+
+Fast Clock parameters (from lnpe-parms):
+- Slot#: 123 reserved for Fast Clock data (subtype 0x7B inside WR_SL_DATA)
+- Byte mapping and meanings:
+  - byte 3: CLK_RATE — Clock rate (0=freeze, 1=normal 1:1, 10=10:1, ...). Max value 0x7F (128:1)
+  - bytes 4-5: FRAC_MIN low/high — sub-minute fractional counter (16-bit)
+  - byte 6: 256-MINS_60 — minutes encoded as (256 - minute) modulo 0-59
+  - byte 7: TRK / Slot identifier
+  - byte 8: 256-HRS_24 — hours encoded as (256 - hour) modulo 0-23
+  - byte 9: DAYS — count of 24-hour rolls
+  - byte 10: CLK_CNTRL — Clock control byte
+     - D6 (0x40) = 1 => this is valid clock information; 0 => ignore (not a SYNC)
+     - bit0 = synchronized flag
+     - bit1 = running flag
+  - byte 11: ID1 — Device ID low (who last set the clock)
+  - byte 12: ID2 — Device ID high
+
+- Usage notes from spec:
+  - The Fast Clock slot is used to synchronise devices; devices should not poll the slot continuously but should use the slot to restore sync and then run local sub-minute timers.
+  - Typical sync interval: ~70–100 seconds. On SYNC read, devices should reset local fractional counters.
