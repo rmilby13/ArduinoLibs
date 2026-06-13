@@ -18,4 +18,22 @@ namespace LocoNet {
 	arduino::String LN_LOCO_SPD::toString() {
 		return LNPacket::toString () + "LOCO_SPD";
 	}
+
+	byte LN_LOCO_SPD::getSlot(){
+		return this->data.size() > 1 ? this->data[1] : 0;
+	}
+
+	byte LN_LOCO_SPD::getSpeed(){
+		return this->data.size() > 2 ? this->data[2] : 0;
+	}
+
+	void LN_LOCO_SPD::setSlot(byte s){
+		if(this->data.size() > 1) this->data[1] = s;
+		this->setCheckSum();
+	}
+
+	void LN_LOCO_SPD::setSpeed(byte sp){
+		if(this->data.size() > 2) this->data[2] = sp;
+		this->setCheckSum();
+	}
 }

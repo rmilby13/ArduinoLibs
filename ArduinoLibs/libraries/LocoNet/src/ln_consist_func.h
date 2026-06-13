@@ -10,6 +10,11 @@ namespace LocoNet {
 		LN_CONSIST_FUNC( packet_data &pdata );
 		LN_CONSIST_FUNC( LNPacket &packet );
 		arduino::String toString();
+
+		byte getSlot();
+		byte getDirF();
+		void setSlot(byte s);
+		void setDirF(byte df);
 	};
 }
 

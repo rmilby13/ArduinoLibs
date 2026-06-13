@@ -10,6 +10,12 @@ namespace LocoNet {
 		LN_LISSY_REP( packet_data &pdata );
 		LN_LISSY_REP( LNPacket &packet );
 		arduino::String toString();
+
+		byte getFlag();
+		byte getUnitHigh();
+		byte getUnitLow();
+		byte getAddrHigh();
+		byte getAddrLow();
 	};
 }
 

@@ -18,4 +18,22 @@ namespace LocoNet {
 	arduino::String LN_LOCO_DIRF::toString() {
 		return LNPacket::toString () + "LOCO_DIRF";
 	}
+
+	byte LN_LOCO_DIRF::getSlot(){
+		return this->data.size() > 1 ? this->data[1] : 0;
+	}
+
+	byte LN_LOCO_DIRF::getDirF(){
+		return this->data.size() > 2 ? this->data[2] : 0;
+	}
+
+	void LN_LOCO_DIRF::setSlot(byte s){
+		if(this->data.size() > 1) this->data[1] = s;
+		this->setCheckSum();
+	}
+
+	void LN_LOCO_DIRF::setDirF(byte df){
+		if(this->data.size() > 2) this->data[2] = df;
+		this->setCheckSum();
+	}
 }

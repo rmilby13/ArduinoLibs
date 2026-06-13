@@ -10,6 +10,12 @@ namespace LocoNet {
 		LN_PEER_XFER( packet_data &pdata );
 		LN_PEER_XFER( LNPacket &packet );
 		arduino::String toString();
+
+		byte getSrc();
+		uint16_t getDst();
+		byte getCount1();
+		byte getCount2();
+		byte getDataByte(int idx); // idx 0-7
 	};
 }
 

@@ -10,6 +10,11 @@ namespace LocoNet {
 		LN_LOCO_SPD( packet_data &pdata );
 		LN_LOCO_SPD( LNPacket &packet );
 		arduino::String toString();
+
+		byte getSlot();
+		byte getSpeed();
+		void setSlot(byte s);
+		void setSpeed(byte sp);
 	};
 }
 

@@ -18,4 +18,22 @@ namespace LocoNet {
 	arduino::String LN_SLOT_STAT1::toString() {
 		return LNPacket::toString () + "SLOT_STAT1";
 	}
+
+	byte LN_SLOT_STAT1::getSlot(){
+		return this->data.size() > 1 ? this->data[1] : 0;
+	}
+
+	byte LN_SLOT_STAT1::getStat1(){
+		return this->data.size() > 2 ? this->data[2] : 0;
+	}
+
+	void LN_SLOT_STAT1::setSlot(byte s){
+		if(this->data.size() > 1) this->data[1] = s;
+		this->setCheckSum();
+	}
+
+	void LN_SLOT_STAT1::setStat1(byte s1){
+		if(this->data.size() > 2) this->data[2] = s1;
+		this->setCheckSum();
+	}
 }

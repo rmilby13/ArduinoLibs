@@ -10,6 +10,11 @@ namespace LocoNet {
 		LN_UNLINK_SLOTS( packet_data &pdata );
 		LN_UNLINK_SLOTS( LNPacket &packet );
 		arduino::String toString();
+
+		byte getSlotA();
+		byte getSlotB();
+		void setSlotA(byte a);
+		void setSlotB(byte b);
 	};
 }
 

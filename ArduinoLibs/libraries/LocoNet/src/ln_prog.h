@@ -10,6 +10,9 @@ namespace LocoNet {
 		LN_PROG( packet_data &pdata );
 		LN_PROG( LNPacket &packet );
 		arduino::String toString();
+
+		byte getByte(int idx);
+		void setByte(int idx, byte v);
 	};
 }
 

@@ -10,6 +10,11 @@ namespace LocoNet {
 		LN_MOVE_SLOTS( packet_data &pdata );
 		LN_MOVE_SLOTS( LNPacket &packet );
 		arduino::String toString();
+
+		byte getSrc();
+		byte getDst();
+		void setSrc(byte s);
+		void setDst(byte d);
 	};
 }
 

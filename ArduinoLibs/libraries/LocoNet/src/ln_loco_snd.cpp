@@ -18,4 +18,22 @@ namespace LocoNet {
 	arduino::String LN_LOCO_SND::toString() {
 		return LNPacket::toString () + "LOCO_SND";
 	}
+
+	byte LN_LOCO_SND::getSlot(){
+		return this->data.size() > 1 ? this->data[1] : 0;
+	}
+
+	byte LN_LOCO_SND::getSound(){
+		return this->data.size() > 2 ? this->data[2] : 0;
+	}
+
+	void LN_LOCO_SND::setSlot(byte s){
+		if(this->data.size() > 1) this->data[1] = s;
+		this->setCheckSum();
+	}
+
+	void LN_LOCO_SND::setSound(byte snd){
+		if(this->data.size() > 2) this->data[2] = snd;
+		this->setCheckSum();
+	}
 }

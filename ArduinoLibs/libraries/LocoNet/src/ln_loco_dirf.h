@@ -10,6 +10,11 @@ namespace LocoNet {
 		LN_LOCO_DIRF( packet_data &pdata );
 		LN_LOCO_DIRF( LNPacket &packet );
 		arduino::String toString();
+
+		byte getSlot();
+		byte getDirF();
+		void setSlot(byte s);
+		void setDirF(byte df);
 	};
 }
 
