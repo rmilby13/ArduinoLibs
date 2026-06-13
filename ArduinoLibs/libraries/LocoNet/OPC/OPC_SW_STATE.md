@@ -1,6 +1,10 @@
-- OPC code: SWITCH STATE (SW_STATE)
-- Purpose: Provides the current known state of a switch (address + state)
+- OPC code: 0xBC (SW_STATE)
+- Packet length: 4 bytes
+  - byte 0: 0xBC (opcode)
+  - byte 1: address low 7 bits
+  - byte 2: address high bits in low nibble; other bits reserved/flags
+  - byte 3: checksum
+- Purpose: Request or communicate the state of a switch (addressed).
 - Implemented by: src/ln_sw_state.h, src/ln_sw_state.cpp
 - Class: LocoNet::LN_SW_State (inherits LNPacket)
-- API highlights: getAddress(), setAddress(), toString().
-- Notes: Distinct from SW_REP (which is a reply); SW_STATE is used to set or communicate state explicitly.
+- Reference: getAddress()/setAddress() encoding in ln_sw_state.cpp

@@ -1,5 +1,10 @@
-- OPC code: WR_SL_DATA
-- Purpose: Write slot data / variable-length data blocks (used as a base for slot/clock packets)
+- OPC code: 0xEF (WR_SL_DATA)
+- Packet length: 14 bytes (special-case length)
+  - byte 0: 0xEF (opcode)
+  - byte 1: slot/type length byte (implementation-dependent)
+  - byte 2: subtype/format selector (e.g., 0x7B for Fast Clock Slot Data)
+  - bytes 3..12: payload (format depends on subtype)
+  - byte 13: checksum
+- Purpose: Write slot/variable-length data blocks; used as container for sub-formats such as Fast Clock Slot Data.
 - Implemented by: src/ln_wr_sl_data.h, src/ln_wr_sl_data.cpp
-- Class: LocoNet::LN_WR_SL_DATA (inherits LNPacket)
-- Notes: LN_FAST_CLOCK_SLOT_DATA inherits from this class for clock-specific payloads.
+- Notes: LN_FAST_CLOCK_SLOT_DATA (data[2]==0x7B) is handled specially in the packet factory.

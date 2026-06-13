@@ -1,5 +1,8 @@
-- OPC code: GPON (general-purpose outputs on)
-- Purpose: Set/turn on general-purpose outputs or output bits.
+- OPC code: 0x83 (GPON)
+- Packet length: 2 bytes
+  - byte 0: 0x83 (opcode)
+  - byte 1: checksum
+- Purpose: Set / turn on general-purpose outputs.
 - Implemented by: src/ln_gpon.h, src/ln_gpon.cpp
 - Class: LocoNet::LN_GPON (inherits LNPacket)
-- Notes: See ln_gpon implementation for byte layout and mapping to device outputs.
+- Notes: Implementation currently sets opcode to DigiTraxOpcBusy (0x81) in the constructor — check ln_gpon.cpp if behavior differs from spec. See local PDFs for bit layout.

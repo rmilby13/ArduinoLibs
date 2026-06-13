@@ -1,5 +1,8 @@
-- OPC code: GPOFF (general-purpose outputs off)
-- Purpose: Turn off a general-purpose output or clear output bits.
+- OPC code: 0x82 (GPOFF)
+- Packet length: 2 bytes
+  - byte 0: 0x82 (opcode)
+  - byte 1: checksum
+- Purpose: Clear / turn off general-purpose outputs.
 - Implemented by: src/ln_gpoff.h, src/ln_gpoff.cpp
 - Class: LocoNet::LN_GPOFF (inherits LNPacket)
-- Notes: Companion packet GPON exists for turning outputs on; see source for exact bit layout.
+- Notes: Companion GPON (0x83) sets outputs. See source and local PDFs for device-specific bit mappings.

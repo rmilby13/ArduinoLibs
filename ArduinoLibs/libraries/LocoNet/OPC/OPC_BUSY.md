@@ -1,2 +1,7 @@
-- OPC code 0x81
-- Master is busy
+- OPC code: 0x81 (BUSY)
+- Packet length: 2 bytes
+  - byte 0: 0x81 (opcode)
+  - byte 1: checksum
+- Purpose: Indicates the master/device is busy (bus collision/backoff signaling).
+- Implemented by: src/ln_busy.h, src/ln_busy.cpp
+- Notes: Matches DigiTrax/Loconet BUSY semantics from the local protocol PDFs.

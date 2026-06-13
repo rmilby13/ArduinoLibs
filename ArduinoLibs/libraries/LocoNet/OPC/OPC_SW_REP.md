@@ -1,6 +1,11 @@
-- OPC code: SWITCH REPLY (SW_REP)
+- OPC code: 0xB1 (SW_REP, Switch Reply)
+- Packet length: 4 bytes
+  - byte 0: 0xB1 (opcode)
+  - byte 1: address low 7 bits (A0..A6)
+  - byte 2: address high 4 bits in bits 0-3, bit4=active, bit5=closed, bits 7-4 reserved
+  - byte 3: checksum
 - Purpose: Reports a turnout/switch state (address, closed/open, active)
 - Implemented by: src/ln_sw_rep.h, src/ln_sw_rep.cpp
 - Class: LocoNet::LN_SW_REP (inherits LNPacket)
 - API highlights: getAddress(), setAddress(), getClosed()/setClosed(), getActive()/setActive(), toString().
-- Notes: Used as a response to input or state queries; check ln_sw_rep for encoding details.
+- Reference: address encoding implemented in ln_sw_rep.cpp (address = ((data[2]&0x0F)<<7) + (data[1]&0x7F) + 1)

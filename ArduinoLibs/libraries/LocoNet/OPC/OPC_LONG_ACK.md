@@ -1,5 +1,10 @@
-- OPC code: LONG ACK
-- Purpose: Acknowledgement for long-form or multi-byte operations; may include the original OPC being acknowledged.
+- OPC code: 0xB4 (LONG_ACK)
+- Packet length: 4 bytes
+  - byte 0: 0xB4 (opcode)
+  - byte 1: acknowledged opcode (lower 7 bits; original opcode ORed with 0x80 in toString logic)
+  - byte 2: result (0 = failed, non-zero = success; implementation uses 0x7F for success)
+  - byte 3: checksum
+- Purpose: Long-form acknowledgement for operations (e.g., SW_ACK or SW_STATE results).
 - Implemented by: src/ln_long_ack.h, src/ln_long_ack.cpp
 - Class: LocoNet::LN_Long_Ack (inherits LNPacket)
-- API highlights: Constructors accept an LN_OP_CODE and boolean ack flag; toString() available.
+- Reference: ln_long_ack.cpp constructors and toString() for mapping of acknowledged opcodes and result interpretation.

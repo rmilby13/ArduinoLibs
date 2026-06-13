@@ -1,6 +1,8 @@
-- OPC code: NOP (no operation)
-- Purpose: Idle/keepalive packet with no payload.
+- OPC code: 0x80 (NOP, No Operation)
+- Packet length: 2 bytes
+  - byte 0: 0x80 (opcode)
+  - byte 1: checksum (0xFF XOR of preceding bytes)
+- Purpose: Idle / keepalive packet with no payload.
 - Implemented by: src/ln_nop.h, src/ln_nop.cpp
 - Class: LocoNet::LN_NOP (inherits LNPacket)
-- Usage: Constructed/parses empty packet data and provides toString() for logging.
-- Reference: libraries/LocoNet/LocoNet.md and included protocol PDFs in the library folder.
+- Reference: libraries/LocoNet/LocoNet.md and loconet protocol PDFs in this folder.

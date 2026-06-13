@@ -1,6 +1,20 @@
-- OPC code: FAST CLOCK SLOT DATA
-- Purpose: Provides fast-clock information for a specific slot: rate, fractional minute, minute, hour, day, slot, control flags, and device ID bytes.
+- OPC/format: WR_SL_DATA (0xEF) with subtype 0x7B (FAST_CLOCK_SLOT_DATA)
+- Packet length: 14 bytes (WR_SL_DATA special-case)
+  - byte 0: 0xEF (WR_SL_DATA opcode)
+  - byte 1: length/subtype (implementation defaulted in LNPacket constructor)
+  - byte 2: 0x7B (Fast Clock Slot Data identifier)
+  - byte 3: Rate (0=freeze, 1=normal 1:1, 10=10:1, etc.)
+  - byte 4: fractional-minute low
+  - byte 5: fractional-minute high
+  - byte 6: Minute encoded as (256 - minute) modulo 0-59
+  - byte 7: Slot/Track byte
+  - byte 8: Hour encoded as (256 - hour) modulo 0-23
+  - byte 9: Day (number of 24-hour rolls)
+  - byte 10: Clock control byte (bit meanings: D6 (0x40)=valid, bit0=synchronized, bit1=running)
+  - byte 11: Device ID 1
+  - byte 12: Device ID 2
+  - byte 13: checksum
 - Implemented by: src/ln_fast_clock_slot_data.h, src/ln_fast_clock_slot_data.cpp
 - Class: LocoNet::LN_FAST_CLOCK_SLOT_DATA (inherits LN_WR_SL_DATA)
 - API highlights: getRate()/setRate(), getFracMin()/setFracMin(), getMinute()/setMinute(), getHour()/setHour(), getDay()/setDay(), getSlot()/setSlot(), getClockControl()/setClockControl(), isValid()/setValid(), isSynchronized()/setSynchronized(), isRunning()/setRunning(), getDeviceId1()/getDeviceId2().
-- Notes: Minute/hour are stored as (256 - value) modulo range; includes helpers for synchronized/running flags and combined fractional-minute accessors.
+- Reference: ln_fast_clock_slot_data.cpp documents encoding and helper behavior (minute/hour stored as 256-value).
