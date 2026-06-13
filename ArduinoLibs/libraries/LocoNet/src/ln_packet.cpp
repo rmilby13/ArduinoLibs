@@ -214,6 +214,12 @@ std::unique_ptr<LocoNet::LNPacket> LocoNet::LNPacket::factory(packet_data &pdata
     switch (LNPacket::get_opcode(pdata.at(0))){
         case LN_OPC_NOOP:
             return std::make_unique<LN_NOP>(pdata);
+        case LN_OPC_LOCO_SPD:
+            return std::make_unique<LN_LOCO_SPD>(pdata);
+        case LN_OPC_LOCO_DIRF:
+            return std::make_unique<LN_LOCO_DIRF>(pdata);
+        case LN_OPC_LOCO_SND:
+            return std::make_unique<LN_LOCO_SND>(pdata);
         case LN_OPC_SW_REQ:
             return std::make_unique<LN_SW_REQ>(pdata);
         case LN_OPC_SW_REP:
@@ -222,12 +228,32 @@ std::unique_ptr<LocoNet::LNPacket> LocoNet::LNPacket::factory(packet_data &pdata
             return std::make_unique<LN_IMM_Packet>(pdata);
         case LN_OPC_INPUT_REP:
             return std::make_unique<LN_INPUT_REP>(pdata);
+        case LN_OPC_SLOT_STAT1:
+            return std::make_unique<LN_SLOT_STAT1>(pdata);
+        case LN_OPC_CONSIST_FUNC:
+            return std::make_unique<LN_CONSIST_FUNC>(pdata);
+        case LN_OPC_LINK_SLOTS:
+            return std::make_unique<LN_LINK_SLOTS>(pdata);
+        case LN_OPC_UNLINK_SLOTS:
+            return std::make_unique<LN_UNLINK_SLOTS>(pdata);
+        case LN_OPC_MOVE_SLOTS:
+            return std::make_unique<LN_MOVE_SLOTS>(pdata);
+        case LN_OPC_RQ_SL_DATA:
+            return std::make_unique<LN_RQ_SL_DATA>(pdata);
         case LN_OPC_SW_STATE:
             return std::make_unique<LN_SW_State>(pdata);
         case LN_OPC_SW_ACK:
             return std::make_unique<LN_SW_ACK>(pdata);
         case LN_OPC_LONG_ACK:
             return std::make_unique<LN_Long_Ack>(pdata);
+        case LN_OPC_LISSY_REP:
+            return std::make_unique<LN_LISSY_REP>(pdata);
+        case LN_OPC_PEER_XFER:
+            return std::make_unique<LN_PEER_XFER>(pdata);
+        case LN_OPC_PROG:
+            return std::make_unique<LN_PROG>(pdata);
+        case LN_OPC_SL_RD_DATA:
+            return std::make_unique<LN_SL_RD_DATA>(pdata);
         case LN_OPC_WR_SL_DATA:
             switch (pdata[2]) {
                 case 0x7B: // Fast Clock Slot Data
@@ -245,6 +271,12 @@ std::unique_ptr<LocoNet::LNPacket> LocoNet::LNPacket::factory( LNPacket& packet)
     switch (packet.get_opcode()){
         case LN_OPC_NOOP:
             return std::make_unique<LN_NOP>(packet);
+        case LN_OPC_LOCO_SPD:
+            return std::make_unique<LN_LOCO_SPD>(packet);
+        case LN_OPC_LOCO_DIRF:
+            return std::make_unique<LN_LOCO_DIRF>(packet);
+        case LN_OPC_LOCO_SND:
+            return std::make_unique<LN_LOCO_SND>(packet);
         case LN_OPC_SW_REQ:
             return std::make_unique<LN_SW_REQ>(packet);
         case LN_OPC_SW_REP:
@@ -253,12 +285,32 @@ std::unique_ptr<LocoNet::LNPacket> LocoNet::LNPacket::factory( LNPacket& packet)
             return std::make_unique<LN_IMM_Packet>(packet);
         case LN_OPC_INPUT_REP:
             return std::make_unique<LN_INPUT_REP>(packet);
+        case LN_OPC_SLOT_STAT1:
+            return std::make_unique<LN_SLOT_STAT1>(packet);
+        case LN_OPC_CONSIST_FUNC:
+            return std::make_unique<LN_CONSIST_FUNC>(packet);
+        case LN_OPC_LINK_SLOTS:
+            return std::make_unique<LN_LINK_SLOTS>(packet);
+        case LN_OPC_UNLINK_SLOTS:
+            return std::make_unique<LN_UNLINK_SLOTS>(packet);
+        case LN_OPC_MOVE_SLOTS:
+            return std::make_unique<LN_MOVE_SLOTS>(packet);
+        case LN_OPC_RQ_SL_DATA:
+            return std::make_unique<LN_RQ_SL_DATA>(packet);
         case LN_OPC_SW_STATE:
             return std::make_unique<LN_SW_State>(packet);
         case LN_OPC_SW_ACK:
             return std::make_unique<LN_SW_ACK>(packet);
         case LN_OPC_LONG_ACK:
             return std::make_unique<LN_Long_Ack>(packet);
+        case LN_OPC_LISSY_REP:
+            return std::make_unique<LN_LISSY_REP>(packet);
+        case LN_OPC_PEER_XFER:
+            return std::make_unique<LN_PEER_XFER>(packet);
+        case LN_OPC_PROG:
+            return std::make_unique<LN_PROG>(packet);
+        case LN_OPC_SL_RD_DATA:
+            return std::make_unique<LN_SL_RD_DATA>(packet);
         case LN_OPC_WR_SL_DATA:
             switch (packet.data.at(2)) {
                 case 0x7B: // Fast Clock Slot Data
