@@ -163,4 +163,103 @@ Appendix: Quick field encodings (copyable snippets)
     for i in 0..(len-2): chksum ^= data[i]
     assert chksum == data[len-1]
 
+
+Additional opcode coverage — spec-only packet types (not currently implemented in this library)
+
+14) LOCO_ADR (0xBF)
+- Length: 4 (format: <0xBF>,<0>,<ADR>,<CKSUM>)
+- Layout: [0xBF][0x00][ADR][CKSUM]
+  - ADR: 7-bit locomotive address (short) or low byte when requesting address allocation
+- Purpose: Request a locomotive address be assigned/returned by the Master. If not found, master will place the address in a free slot and respond with OPC_SL_RD_DATA (0xE7).
+- Spec references: loconetpersonaledition and ln-pe-en opcode tables.
+- Implementation notes: Not implemented. Factory: should accept 0xBF and create LN_LOCO_ADR (new type). On receiving, expect OPC_SL_RD_DATA reply or OPC_LONG_ACK on failure.
+
+15) RQ_SL_DATA (0xBB)
+- Length: 4
+- Layout: [0xBB][SLOT][0x00][CKSUM]
+- Purpose: Request slot data/status block for SLOT; master responds with OPC_SL_RD_DATA (0xE7).
+- Parameters: SLOT (0..127)
+- Implementation notes: Not implemented. Useful for querying slot contents; verify response parsing through LNPacket::factory producing LN_SL_RD_DATA when opcode 0xE7.
+
+16) MOVE_SLOTS (0xBA)
+- Length: 4
+- Layout: [0xBA][SRC][DST][CKSUM]
+- Purpose: Move slot SRC to DST. On success a slot read OPC_SL_RD_DATA for destination is returned.
+- Implementation notes: Not implemented. Ensure DST and SRC validate range 0..127 and handle Long Ack failure responses.
+
+17) LINK_SLOTS (0xB9)
+- Length: 4
+- Layout: [0xB9][SL1][SL2][CKSUM]
+- Purpose: Link slave slot SL1 to master slot SL2 (consist linking). Reply: OPC_SL_RD_DATA of affected slot(s).
+- Implementation notes: Not implemented. Encoding uses 7-bit slot numbers.
+
+18) UNLINK_SLOTS (0xB8)
+- Length: 4
+- Layout: [0xB8][SL1][SL2][CKSUM]
+- Purpose: Unlink slots.
+- Implementation notes: Not implemented.
+
+19) CONSIST_FUNC (0xB6)
+- Length: 4
+- Layout: [0xB6][SLOT][DIRF][CKSUM]
+- Purpose: Set function bits in a consist uplink element. DIRF encodes direction and F0..F4 function bits.
+- Implementation notes: Not implemented.
+
+20) SLOT_STAT1 (0xB5)
+- Length: 4
+- Layout: [0xB5][SLOT][STAT1][CKSUM]
+- Purpose: Write slot status 1 (STAT1 contains busy/consist/speed-mode bits). See lnpe-parms for bit fields: D7-SL_SPURGE, D6-SL_CONUP, D3-SL_CONDN, D5/D4 SL_BUSY/SL_ACTIVE, D2..D0 decoder type.
+- Implementation notes: Not implemented.
+
+21) LOCO_SPD (0xA0), LOCO_DIRF (0xA1), LOCO_SND (0xA2)
+- Length: 4 each
+- Layouts:
+  - LOCO_SPD: [0xA0][SLOT][SPD][CKSUM]
+  - LOCO_DIRF: [0xA1][SLOT][DIRF][CKSUM]
+  - LOCO_SND: [0xA2][SLOT][SND][CKSUM]
+- Purpose: Set slot speed, direction/function bits, and slot sound respectively. SPD encoding: 0x00=stop, 0x01=emergency stop, 0x02-0x7F increasing speed.
+- Implementation notes: Not implemented. Map to slot update behavior similar to WR_SL_DATA but for single-field updates.
+
+22) SL_RD_DATA (0xE7) — Slot Data Read (response)
+- Length: 14 (special-case/count 0x0E)
+- Layout: [0xE7][0x0E][SLOT#][STAT1][ADR][SPD][DIRF][TRK][SS2][ADR2][SND][ID1][ID2][CKSUM]
+- Purpose: Returned by master or as reply to slot-related requests (READ/MOVE/LINK/WRITE completion). Contains full slot content including ADR/ADR2 for long addresses, STAT1/SS2 status bytes, track flags and device IDs.
+- Implement notes: Not implemented as a dedicated class; recommended LN_SL_RD_DATA or reuse LN_WR_SL_DATA for parsing responses. Factory should instantiate LN_SL_RD_DATA when opcode 0xE7.
+- Parameter table: STAT1, SS2, ACK1 semantics are in lnpe-parms file (Slot Status and ACK1 definitions).
+
+23) PEER_XFER (0xE5)
+- Length: 16 (COUNT=0x10)
+- Layout: [0xE5][0x10][SRC][DSTL][DSTH][PXCT1][D1..D8][PXCT2][D5..D8?]... (per spec)
+- Purpose: Move 8 bytes peer-to-peer (SRC→DST). SRC values 0x70-0x7E reserved. Used for peer memory transfers between devices.
+- Implementation notes: Not implemented. Exact argument positions should be taken from ln-pe-en/E5 section when implementing.
+
+24) LISSY / WHEELCNT / RFID report (0xE4)
+- Length: variable (0x08 / 0x0C / 0x0E depending on subtype)
+- Layout variants indicate LISSY IR report, wheel counter reports, RFID reports, etc. Common format: [0xE4][COUNT][type/subtype][addr_hi][addr_lo][data...][CKSUM]
+- Purpose: Various peripheral reports (Lissy IR, wheel counters, RFID tags). Implementation must parse subtype byte (e.g., 0x00, 0x40, 0x41) to determine exact fields.
+- Implementation notes: Not implemented. Implement as a generic LN_E4_REPORT with subtype dispatching.
+
+25) MULTI_SENSE (0xD0)
+- Length: 6 (example)
+- Layout: [0xD0][type][zone+section][addr_hi][addr_lo][CKSUM]
+- Purpose: Power management and transponding information (transponding ARG fields per lnpe-parms).
+- Implementation notes: Not implemented.
+
+26) UHLI_FUN / UHLENBROCK function extensions (0xD4)
+- Length: 6
+- Layout: [0xD4][0x20][slot][function_group][function][CKSUM] (per spec table)
+- Purpose: Extended function control for Uhlenbrock devices and function ranges 9-28 etc.
+- Implementation notes: Not implemented; treat as IMM_PACKET-like or dedicated class if required.
+
+27) Programming / Service Mode opcodes (0xE6 and related)
+- E6: Programming service mode responses using COUNT 0x10 / 0x15. Format: <0xE6>,<COUNT>,<PCMD>,<PSTAT>,<HOPSA>,<LOPSA>,<TRK>,<CVH>,<CVL>,<DATA7>,<CHK>
+- Purpose: Operations and responses for Programming Track (Slot 0x7C special slot usage). See lnpe-parms for PCMD, PSTAT, CVH/CVL and DATA7 bit encodings.
+- Implementation notes: Not implemented.
+
+Implementation guidance for unimplemented opcodes
+- Add constants to lnconst.h and enum entries in LN_OP_CODE.
+- Create new ln_<name>.h/.cpp classes mirroring existing patterns (constructors, packet-based ctors, toString, accessors).
+- For variable-length or COUNT-based formats, use LNPacket(packet_data) constructor and parse COUNT-based payload contents; set getLen to return special-case lengths where appropriate (IMM/WR/SL_RD/PEER_XFER)
+- Update ln_packets.h and LNPacket::factory to return the new classes for both direct opcode and subtype (e.g., WR_SL_DATA subtypes, E4 subtypes).
+
 End of LocoNetSpec
