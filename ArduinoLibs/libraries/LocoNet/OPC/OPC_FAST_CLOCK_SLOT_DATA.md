@@ -18,3 +18,4 @@
 - Class: LocoNet::LN_FAST_CLOCK_SLOT_DATA (inherits LN_WR_SL_DATA)
 - API highlights: getRate()/setRate(), getFracMin()/setFracMin(), getMinute()/setMinute(), getHour()/setHour(), getDay()/setDay(), getSlot()/setSlot(), getClockControl()/setClockControl(), isValid()/setValid(), isSynchronized()/setSynchronized(), isRunning()/setRunning(), getDeviceId1()/getDeviceId2().
 - Reference: ln_fast_clock_slot_data.cpp documents encoding and helper behavior (minute/hour stored as 256-value).
+- Spec reference: "OPC_WR_SL_DATA 0xEF with subtype 0x7B — Write Fast Clock slot data" (loconet ln-pe-en variable byte opcodes table). See lines describing CLK_RATE, FRAC_MIN, 256-MINS_60 and 256-HRS_24 encodings in the spec.

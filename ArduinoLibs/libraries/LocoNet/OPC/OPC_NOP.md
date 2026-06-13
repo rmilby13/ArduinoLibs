@@ -6,3 +6,4 @@
 - Implemented by: src/ln_nop.h, src/ln_nop.cpp
 - Class: LocoNet::LN_NOP (inherits LNPacket)
 - Reference: libraries/LocoNet/LocoNet.md and loconet protocol PDFs in this folder.
+- Spec reference: 2-Byte opcodes table (loconet ln-pe-en): OPC_IDLE/OPC_NOOP group; NOP is represented by opcode 0x80 in code (DigiTraxOpcNoOp) per lnconst.h.

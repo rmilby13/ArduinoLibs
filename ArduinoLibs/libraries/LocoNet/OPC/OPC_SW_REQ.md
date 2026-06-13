@@ -9,3 +9,4 @@
 - Class: LocoNet::LN_SW_REQ (inherits LNPacket)
 - API highlights: getAddress(), setAddress(), setClosed()/getClosed(), setActive()/getActive(), toString().
 - Reference: getAddress()/setAddress() encoding in ln_sw_req.cpp
+- Spec reference: "OPC_SW_REQ 0xB0 — Request switch function" (loconet ln-pe-en 4-byte opcodes table).

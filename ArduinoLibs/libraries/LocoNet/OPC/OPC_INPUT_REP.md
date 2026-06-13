@@ -10,3 +10,4 @@
 - Class: LocoNet::LN_INPUT_REP (inherits LNPacket)
 - API highlights: getAddress(), setAddress(), setActive()/getActive(), isDS54().
 - Reference: ln_input_rep.cpp contains address/flag encoding and helpers.
+- Spec reference: "OPC_INPUT_REP 0xB2 — General sensor input codes" (loconet ln-pe-en 4-byte opcodes table).

@@ -9,3 +9,4 @@
 - Class: LocoNet::LN_SW_REP (inherits LNPacket)
 - API highlights: getAddress(), setAddress(), getClosed()/setClosed(), getActive()/setActive(), toString().
 - Reference: address encoding implemented in ln_sw_rep.cpp (address = ((data[2]&0x0F)<<7) + (data[1]&0x7F) + 1)
+- Spec reference: "OPC_SW_REP 0xB1 — Turnout sensor state report" (loconet ln-pe-en 4-byte opcodes table).

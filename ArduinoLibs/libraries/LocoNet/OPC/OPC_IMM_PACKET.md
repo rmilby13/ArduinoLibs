@@ -9,3 +9,4 @@
 - Implemented by: src/ln_imm_packet.h, src/ln_imm_packet.cpp
 - Class: LocoNet::LN_IMM_Packet (inherits LNPacket)
 - Notes: See local protocol PDFs for IMM_PACKET sub-formats; code initializes bytes 1/2 in LNPacket ctor.
+- Spec reference: "OPC_IMM_PACKET 0xED — Immediate codes / special-purpose small payload packets" (loconet ln-pe-en variable byte opcodes).

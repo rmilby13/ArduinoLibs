@@ -8,3 +8,4 @@
 - Purpose: Write slot/variable-length data blocks; used as container for sub-formats such as Fast Clock Slot Data.
 - Implemented by: src/ln_wr_sl_data.h, src/ln_wr_sl_data.cpp
 - Notes: LN_FAST_CLOCK_SLOT_DATA (data[2]==0x7B) is handled specially in the packet factory.
+- Spec reference: "OPC_WR_SL_DATA 0xEF — Write slot data" and variable formats including Fast Clock (subtype 0x7B) (loconet ln-pe-en variable byte opcodes table).

@@ -5,3 +5,4 @@
 - Purpose: Indicates the master/device is busy (bus collision/backoff signaling).
 - Implemented by: src/ln_busy.h, src/ln_busy.cpp
 - Notes: Matches DigiTrax/Loconet BUSY semantics from the local protocol PDFs.
+- Spec reference: "OPC_BUSY 0x81 — MASTER busy code, NUL" (loconet ln-pe-en opcode summary).

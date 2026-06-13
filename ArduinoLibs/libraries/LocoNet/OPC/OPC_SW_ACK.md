@@ -8,3 +8,4 @@
 - Implemented by: src/ln_sw_ack.h, src/ln_sw_ack.cpp
 - Class: LocoNet::LN_SW_ACK (inherits LNPacket)
 - Reference: ln_sw_ack.cpp for address/flag encoding and toString().
+- Spec reference: "OPC_SW_ACK 0xBD — Request switch with acknowledge function" (loconet ln-pe-en 4-byte opcodes table).

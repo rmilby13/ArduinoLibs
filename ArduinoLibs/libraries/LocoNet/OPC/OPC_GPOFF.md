@@ -6,3 +6,4 @@
 - Implemented by: src/ln_gpoff.h, src/ln_gpoff.cpp
 - Class: LocoNet::LN_GPOFF (inherits LNPacket)
 - Notes: Companion GPON (0x83) sets outputs. See source and local PDFs for device-specific bit mappings.
+- Spec reference: "OPC_GPOFF 0x82 — GLOBAL power OFF req" (loconet ln-pe-en opcode summary).

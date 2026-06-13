@@ -6,3 +6,4 @@
 - Implemented by: src/ln_idle.h, src/ln_idle.cpp
 - Class: LocoNet::LN_IDLE (inherits LNPacket)
 - Notes: Used to indicate idle state on the LocoNet bus; toString() implemented for diagnostics.
+- Spec reference: "OPC_IDLE 0x85 — FORCE IDLE state, B'cast emerg. STOP" (loconet ln-pe-en opcode summary).

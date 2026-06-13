@@ -8,3 +8,4 @@
 - Implemented by: src/ln_long_ack.h, src/ln_long_ack.cpp
 - Class: LocoNet::LN_Long_Ack (inherits LNPacket)
 - Reference: ln_long_ack.cpp constructors and toString() for mapping of acknowledged opcodes and result interpretation.
+- Spec reference: "OPC_LONG_ACK 0xB4 — Long acknowledge" (loconet ln-pe-en 4-byte opcodes table).

@@ -8,3 +8,4 @@
 - Implemented by: src/ln_sw_state.h, src/ln_sw_state.cpp
 - Class: LocoNet::LN_SW_State (inherits LNPacket)
 - Reference: getAddress()/setAddress() encoding in ln_sw_state.cpp
+- Spec reference: "OPC_SW_STATE 0xBC — Request state of switch" (loconet ln-pe-en 4-byte opcodes table).
