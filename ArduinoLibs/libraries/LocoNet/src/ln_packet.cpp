@@ -134,6 +134,18 @@ LocoNet::LN_OP_CODE LocoNet::LNPacket::get_opcode(byte firstByte){
 		case DigiTraxOpcGpon:
 			oc = LN_OPC_GPON;
 			break;
+		case DigiTraxOpcIdle:
+			oc = LN_OPC_IDLE;
+			break;
+		case DigiTraxOpcLocoSpd:
+			oc = LN_OPC_LOCO_SPD;
+			break;
+		case DigiTraxOpcLocoDirF:
+			oc = LN_OPC_LOCO_DIRF;
+			break;
+		case DigiTraxOpcLocoSnd:
+			oc = LN_OPC_LOCO_SND;
+			break;
 		case DigiTraxOpcSwReq:
 			oc = LN_OPC_SW_REQ;
 			break;
@@ -143,11 +155,26 @@ LocoNet::LN_OP_CODE LocoNet::LNPacket::get_opcode(byte firstByte){
 		case DigiTraxOpcInputRep:
 			oc = LN_OPC_INPUT_REP;
 			break;
-		case DigiTraxOpcMultiSense:
-			oc = LN_OPC_MULTI_SENSE;
+		case DigiTraxOpcSlotStat1:
+			oc = LN_OPC_SLOT_STAT1;
 			break;
-		case DigiTraxOpcImmPacket:
-			oc = LN_OPC_IMM_PACKET;
+		case DigiTraxOpcLongAck:
+			oc = LN_OPC_LONG_ACK;
+			break;
+		case DigiTraxOpcConsistFunc:
+			oc = LN_OPC_CONSIST_FUNC;
+			break;
+		case DigiTraxOpcLinkSlots:
+			oc = LN_OPC_LINK_SLOTS;
+			break;
+		case DigiTraxOpcUnlinkSlots:
+			oc = LN_OPC_UNLINK_SLOTS;
+			break;
+		case DigiTraxOpcMoveSlots:
+			oc = LN_OPC_MOVE_SLOTS;
+			break;
+		case DigiTraxOpcRqSlData:
+			oc = LN_OPC_RQ_SL_DATA;
 			break;
 		case DigiTraxOpcSwState:
 			oc = LN_OPC_SW_STATE;
@@ -155,8 +182,23 @@ LocoNet::LN_OP_CODE LocoNet::LNPacket::get_opcode(byte firstByte){
 		case DigiTraxOpcSwAck:
 			oc = LN_OPC_SW_ACK;
 			break;
-		case DigiTraxOpcLongAck:
-			oc = LN_OPC_LONG_ACK;
+		case DigiTraxOpcMultiSense:
+			oc = LN_OPC_MULTI_SENSE;
+			break;
+		case DigiTraxOpcLissyRep:
+			oc = LN_OPC_LISSY_REP;
+			break;
+		case DigiTraxOpcPeerXfer:
+			oc = LN_OPC_PEER_XFER;
+			break;
+		case DigiTraxOpcProg:
+			oc = LN_OPC_PROG;
+			break;
+		case DigiTraxOpcImmPacket:
+			oc = LN_OPC_IMM_PACKET;
+			break;
+		case DigiTraxOpcSlRdData:
+			oc = LN_OPC_SL_RD_DATA;
 			break;
 		case DigiTraxOpcWrSlData:
 			oc = LN_OPC_WR_SL_DATA;
@@ -449,6 +491,18 @@ byte LocoNet::LNPacket::getLen( LN_OP_CODE opc ) {
 		case LN_OPC_GPON:
 			ret = LNPacket::getLen (DigiTraxOpcGpon);
 			break;
+		case LN_OPC_IDLE:
+			ret = LNPacket::getLen (DigiTraxOpcIdle);
+			break;
+		case LN_OPC_LOCO_SPD:
+			ret = LNPacket::getLen (DigiTraxOpcLocoSpd);
+			break;
+		case LN_OPC_LOCO_DIRF:
+			ret = LNPacket::getLen (DigiTraxOpcLocoDirF);
+			break;
+		case LN_OPC_LOCO_SND:
+			ret = LNPacket::getLen (DigiTraxOpcLocoSnd);
+			break;
 		case LN_OPC_SW_REQ:
 			ret = LNPacket::getLen (DigiTraxOpcSwReq);
 			break;
@@ -458,10 +512,52 @@ byte LocoNet::LNPacket::getLen( LN_OP_CODE opc ) {
 		case LN_OPC_INPUT_REP:
 			ret = LNPacket::getLen (DigiTraxOpcInputRep);
 			break;
+		case LN_OPC_SLOT_STAT1:
+			ret = LNPacket::getLen (DigiTraxOpcSlotStat1);
+			break;
+		case LN_OPC_LONG_ACK:
+			ret = LNPacket::getLen (DigiTraxOpcLongAck);
+			break;
+		case LN_OPC_CONSIST_FUNC:
+			ret = LNPacket::getLen (DigiTraxOpcConsistFunc);
+			break;
+		case LN_OPC_LINK_SLOTS:
+			ret = LNPacket::getLen (DigiTraxOpcLinkSlots);
+			break;
+		case LN_OPC_UNLINK_SLOTS:
+			ret = LNPacket::getLen (DigiTraxOpcUnlinkSlots);
+			break;
+		case LN_OPC_MOVE_SLOTS:
+			ret = LNPacket::getLen (DigiTraxOpcMoveSlots);
+			break;
+		case LN_OPC_RQ_SL_DATA:
+			ret = LNPacket::getLen (DigiTraxOpcRqSlData);
+			break;
+		case LN_OPC_SW_STATE:
+			ret = LNPacket::getLen (DigiTraxOpcWrSlData);
+			break;
+		case LN_OPC_SW_ACK:
+			ret = LNPacket::getLen (DigiTraxOpcSwAck);
+			break;
+		case LN_OPC_MULTI_SENSE:
+			ret = LNPacket::getLen (DigiTraxOpcMultiSense);
+			break;
+		case LN_OPC_LISSY_REP:
+			ret = LNPacket::getLen (DigiTraxOpcLissyRep);
+			break;
+		case LN_OPC_PEER_XFER:
+			ret = LNPacket::getLen (DigiTraxOpcPeerXfer);
+			break;
+		case LN_OPC_PROG:
+			ret = LNPacket::getLen (DigiTraxOpcProg);
+			break;
+		case LN_OPC_SL_RD_DATA:
+			ret = LNPacket::getLen (DigiTraxOpcSlRdData);
+			break;
 		case LN_OPC_IMM_PACKET:
 			ret = LNPacket::getLen (DigiTraxOpcImmPacket);
 			break;
-		case LN_OPC_SW_STATE:
+		case LN_OPC_WR_SL_DATA:
 			ret = LNPacket::getLen (DigiTraxOpcWrSlData);
 			break;
 		default:
