@@ -1,0 +1,9 @@
+- OPC code: 0xBA (MOVE_SLOTS)
+- Packet length: 4 bytes
+  - byte0: 0xBA
+  - byte1: SRC (source slot)
+  - byte2: DST (destination slot)
+  - byte3: checksum
+- Purpose: Move the contents of SRC slot to DST slot. Master returns OPC_SL_RD_DATA for DST on success or OPC_LONG_ACK on failure.
+- Parameters: SRC, DST (0..127)
+- Implementation notes: Not implemented. Validate range and check for LACK or E7 responses.

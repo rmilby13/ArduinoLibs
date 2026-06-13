@@ -1,0 +1,8 @@
+- OPC code: 0xA1 (LOCO_DIRF)
+- Packet length: 4 bytes
+  - byte0: 0xA1
+  - byte1: SLOT
+  - byte2: DIRF (direction and F0..F4 function bits)
+  - byte3: checksum
+- Purpose: Set direction and primary function bits for a slot.
+- Implementation notes: Not implemented.

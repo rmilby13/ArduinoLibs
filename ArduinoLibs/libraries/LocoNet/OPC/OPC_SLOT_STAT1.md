@@ -1,0 +1,15 @@
+- OPC code: 0xB5 (SLOT_STAT1)
+- Packet length: 4 bytes
+  - byte0: 0xB5
+  - byte1: SLOT
+  - byte2: STAT1
+  - byte3: checksum
+- Purpose: Write Slot Status1 which encodes speed mode, consist bits, busy/active, and purge flags.
+- STAT1 bits (summary from lnpe-parms):
+  - D7 SL_SPURGE
+  - D6 SL_CONUP
+  - D3 SL_CONDN
+  - D5 SL_BUSY
+  - D4 SL_ACTIVE
+  - D2..D0 decoder type bits (speed encoding)
+- Implementation notes: Not implemented. Use lnpe-parms for full bit meanings.

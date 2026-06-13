@@ -1,0 +1,10 @@
+- OPC code: 0xBB (RQ_SL_DATA)
+- Packet length: 4 bytes
+  - byte0: 0xBB
+  - byte1: SLOT (0..127)
+  - byte2: 0x00
+  - byte3: checksum
+- Purpose: Request a slot data/status block (master responds with OPC_SL_RD_DATA 0xE7).
+- Parameters: SLOT number (0..127); use to pull current slot contents from master.
+- Spec reference: OPC_RQ_SL_DATA in ln-pe-en.
+- Implementation notes: Not implemented. Add handling to request slot reads and parse 0xE7 responses.

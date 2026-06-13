@@ -1,0 +1,9 @@
+- OPC code: 0xB9 (LINK_SLOTS)
+- Packet length: 4 bytes
+  - byte0: 0xB9
+  - byte1: SL1 (slave slot)
+  - byte2: SL2 (master slot)
+  - byte3: checksum
+- Purpose: Link SL1 to SL2 (consist linking). Master returns OPC_SL_RD_DATA reflecting result.
+- Parameters: SL1, SL2 (slot numbers 0..127)
+- Implementation notes: Not implemented. Ensure linking semantics align with Master behavior.

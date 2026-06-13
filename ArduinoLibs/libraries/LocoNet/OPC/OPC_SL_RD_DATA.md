@@ -1,0 +1,19 @@
+- OPC code: 0xE7 (SL_RD_DATA)
+- Packet length: 14 bytes (COUNT=0x0E)
+  - byte0: 0xE7
+  - byte1: 0x0E
+  - byte2: SLOT#
+  - byte3: STAT1
+  - byte4: ADR (low)
+  - byte5: SPD
+  - byte6: DIRF
+  - byte7: TRK
+  - byte8: SS2
+  - byte9: ADR2
+  - byte10: SND
+  - byte11: ID1
+  - byte12: ID2
+  - byte13: checksum
+- Purpose: Slot data read response containing full slot state (used by master replies to slot requests and reads).
+- Parameters: STAT1/SS2/ACK1 semantics defined in lnpe-parms; ADR2 non-zero indicates long address.
+- Implementation notes: Not currently implemented as a dedicated class; recommended LN_SL_RD_DATA to parse responses from master.

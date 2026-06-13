@@ -1,0 +1,11 @@
+- OPC code(s): 0xE6 and related programming/service-mode opcodes
+- Packet length: variable (examples: COUNT 0x10 or 0x15)
+- Typical layout (service/programming responses): [0xE6][COUNT][PCMD][PSTAT][HOPSA][LOPSA][TRK][CVH][CVL][DATA7]...[CKSUM]
+- Purpose: Programming Track operations and responses (special slot 0x7C usage for programming tasks).
+- Key parameters:
+  - PCMD: programmer command (WR vs RD, byte vs bit mode, ops vs PT)
+  - PSTAT: programmer status flags (user abort, no read ack, no write ack, empty)
+  - HOPSA/LOPSA: high/low address for operations
+  - CVH/CVL: CV number high/low
+  - DATA7: data byte
+- Implementation notes: Not implemented. Parsing requires understanding PCMD bit fields and PSTAT meaning from lnpe-parms.

@@ -34,3 +34,23 @@ Notes and mapping to code
 References
 - loconet_ln-pe-en.pdf (extracted text in loconet_ln-pe-en.txt)
 - libraries/LocoNet/src/lnconst.h and src/ln_packet.cpp for code-level mappings
+
+Per-opcode docs (see OPC/*.md)
+- OPC_LOCO_ADR          (0xBF)  — libraries/LocoNet/OPC/OPC_LOCO_ADR.md
+- OPC_RQ_SL_DATA        (0xBB)  — libraries/LocoNet/OPC/OPC_RQ_SL_DATA.md
+- OPC_MOVE_SLOTS        (0xBA)  — libraries/LocoNet/OPC/OPC_MOVE_SLOTS.md
+- OPC_LINK_SLOTS        (0xB9)  — libraries/LocoNet/OPC/OPC_LINK_SLOTS.md
+- OPC_UNLINK_SLOTS      (0xB8)  — libraries/LocoNet/OPC/OPC_UNLINK_SLOTS.md
+- OPC_CONSIST_FUNC      (0xB6)  — libraries/LocoNet/OPC/OPC_CONSIST_FUNC.md
+- OPC_SLOT_STAT1        (0xB5)  — libraries/LocoNet/OPC/OPC_SLOT_STAT1.md
+- OPC_LOCO_SPD          (0xA0)  — libraries/LocoNet/OPC/OPC_LOCO_SPD.md
+- OPC_LOCO_DIRF         (0xA1)  — libraries/LocoNet/OPC/OPC_LOCO_DIRF.md
+- OPC_LOCO_SND          (0xA2)  — libraries/LocoNet/OPC/OPC_LOCO_SND.md
+- OPC_SL_RD_DATA        (0xE7)  — libraries/LocoNet/OPC/OPC_SL_RD_DATA.md
+- OPC_PEER_XFER         (0xE5)  — libraries/LocoNet/OPC/OPC_PEER_XFER.md
+- OPC_E4_REPORT         (0xE4)  — libraries/LocoNet/OPC/OPC_E4_REPORT.md
+- OPC_MULTI_SENSE       (0xD0)  — libraries/LocoNet/OPC/OPC_MULTI_SENSE.md
+- OPC_UHLI_FUN          (0xD4)  — libraries/LocoNet/OPC/OPC_UHLI_FUN.md
+- OPC_PROGRAMMING       (0xE6)  — libraries/LocoNet/OPC/OPC_PROGRAMMING.md
+
+(Existing per-opcode files are also under libraries/LocoNet/OPC/ — link to them when implementing.)
