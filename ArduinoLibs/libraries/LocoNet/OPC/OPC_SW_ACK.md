@@ -1,0 +1,5 @@
+- OPC code: SWITCH ACK (SW_ACK)
+- Purpose: Acknowledgement for switch-related operations.
+- Implemented by: src/ln_sw_ack.h, src/ln_sw_ack.cpp
+- Class: LocoNet::LN_SW_ACK (inherits LNPacket)
+- Notes: See implementation for expected ack semantics and whether it carries additional fields.

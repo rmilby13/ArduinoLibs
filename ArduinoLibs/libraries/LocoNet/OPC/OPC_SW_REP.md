@@ -1,0 +1,6 @@
+- OPC code: SWITCH REPLY (SW_REP)
+- Purpose: Reports a turnout/switch state (address, closed/open, active)
+- Implemented by: src/ln_sw_rep.h, src/ln_sw_rep.cpp
+- Class: LocoNet::LN_SW_REP (inherits LNPacket)
+- API highlights: getAddress(), setAddress(), getClosed()/setClosed(), getActive()/setActive(), toString().
+- Notes: Used as a response to input or state queries; check ln_sw_rep for encoding details.

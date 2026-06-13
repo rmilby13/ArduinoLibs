@@ -1,0 +1,5 @@
+- OPC code: LONG ACK
+- Purpose: Acknowledgement for long-form or multi-byte operations; may include the original OPC being acknowledged.
+- Implemented by: src/ln_long_ack.h, src/ln_long_ack.cpp
+- Class: LocoNet::LN_Long_Ack (inherits LNPacket)
+- API highlights: Constructors accept an LN_OP_CODE and boolean ack flag; toString() available.

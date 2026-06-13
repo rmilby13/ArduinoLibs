@@ -1,0 +1,6 @@
+- OPC code: INPUT REPORT (INPUT_REP)
+- Purpose: Reports the state of an input (e.g., sensor/contact), includes address and active flag.
+- Implemented by: src/ln_input_rep.h, src/ln_input_rep.cpp
+- Class: LocoNet::LN_INPUT_REP (inherits LNPacket)
+- API highlights: getAddress(), setAddress(), setActive()/getActive(), isDS54() to detect specific hardware format.
+- Notes: Useful for sensors and occupancy detection; see ln_input_rep for encoding specifics.

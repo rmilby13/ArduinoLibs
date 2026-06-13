@@ -1,0 +1,6 @@
+- OPC code: NOP (no operation)
+- Purpose: Idle/keepalive packet with no payload.
+- Implemented by: src/ln_nop.h, src/ln_nop.cpp
+- Class: LocoNet::LN_NOP (inherits LNPacket)
+- Usage: Constructed/parses empty packet data and provides toString() for logging.
+- Reference: libraries/LocoNet/LocoNet.md and included protocol PDFs in the library folder.

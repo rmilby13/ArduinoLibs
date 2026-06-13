@@ -1,0 +1,5 @@
+- OPC code: WR_SL_DATA
+- Purpose: Write slot data / variable-length data blocks (used as a base for slot/clock packets)
+- Implemented by: src/ln_wr_sl_data.h, src/ln_wr_sl_data.cpp
+- Class: LocoNet::LN_WR_SL_DATA (inherits LNPacket)
+- Notes: LN_FAST_CLOCK_SLOT_DATA inherits from this class for clock-specific payloads.

@@ -1,0 +1,6 @@
+- OPC code: SWITCH STATE (SW_STATE)
+- Purpose: Provides the current known state of a switch (address + state)
+- Implemented by: src/ln_sw_state.h, src/ln_sw_state.cpp
+- Class: LocoNet::LN_SW_State (inherits LNPacket)
+- API highlights: getAddress(), setAddress(), toString().
+- Notes: Distinct from SW_REP (which is a reply); SW_STATE is used to set or communicate state explicitly.

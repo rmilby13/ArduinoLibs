@@ -1,0 +1,5 @@
+- OPC code: GPON (general-purpose outputs on)
+- Purpose: Set/turn on general-purpose outputs or output bits.
+- Implemented by: src/ln_gpon.h, src/ln_gpon.cpp
+- Class: LocoNet::LN_GPON (inherits LNPacket)
+- Notes: See ln_gpon implementation for byte layout and mapping to device outputs.

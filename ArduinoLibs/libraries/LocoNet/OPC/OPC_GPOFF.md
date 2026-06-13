@@ -1,0 +1,5 @@
+- OPC code: GPOFF (general-purpose outputs off)
+- Purpose: Turn off a general-purpose output or clear output bits.
+- Implemented by: src/ln_gpoff.h, src/ln_gpoff.cpp
+- Class: LocoNet::LN_GPOFF (inherits LNPacket)
+- Notes: Companion packet GPON exists for turning outputs on; see source for exact bit layout.

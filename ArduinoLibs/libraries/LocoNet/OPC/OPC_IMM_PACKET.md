@@ -1,0 +1,5 @@
+- OPC code: IMMEDIATE PACKET (IMM_PACKET)
+- Purpose: Encapsulates immediate/short commands that carry arbitrary small payloads.
+- Implemented by: src/ln_imm_packet.h, src/ln_imm_packet.cpp
+- Class: LocoNet::LN_IMM_PACKET (inherits LNPacket)
+- Notes: Used by higher-level protocols; inspect implementation for payload parsing and helpers.

@@ -1,0 +1,6 @@
+- OPC code: FAST CLOCK SLOT DATA
+- Purpose: Provides fast-clock information for a specific slot: rate, fractional minute, minute, hour, day, slot, control flags, and device ID bytes.
+- Implemented by: src/ln_fast_clock_slot_data.h, src/ln_fast_clock_slot_data.cpp
+- Class: LocoNet::LN_FAST_CLOCK_SLOT_DATA (inherits LN_WR_SL_DATA)
+- API highlights: getRate()/setRate(), getFracMin()/setFracMin(), getMinute()/setMinute(), getHour()/setHour(), getDay()/setDay(), getSlot()/setSlot(), getClockControl()/setClockControl(), isValid()/setValid(), isSynchronized()/setSynchronized(), isRunning()/setRunning(), getDeviceId1()/getDeviceId2().
+- Notes: Minute/hour are stored as (256 - value) modulo range; includes helpers for synchronized/running flags and combined fractional-minute accessors.

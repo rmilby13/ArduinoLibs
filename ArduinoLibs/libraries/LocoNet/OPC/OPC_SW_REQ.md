@@ -1,0 +1,6 @@
+- OPC code: SWITCH REQUEST (SW_REQ)
+- Purpose: Request to change or query a turnout/switch (address, closed/active flags)
+- Implemented by: src/ln_sw_req.h, src/ln_sw_req.cpp
+- Class: LocoNet::LN_SW_REQ (inherits LNPacket)
+- API highlights: getAddress(), setAddress(), setClosed()/getClosed(), setActive()/getActive(), toString().
+- Notes: Construct from packet data or create new requests programmatically.

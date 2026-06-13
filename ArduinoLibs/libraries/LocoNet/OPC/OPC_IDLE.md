@@ -1,0 +1,5 @@
+- OPC code: IDLE
+- Purpose: Network idle/heartbeat indicator.
+- Implemented by: src/ln_idle.h, src/ln_idle.cpp
+- Class: LocoNet::LN_IDLE (inherits LNPacket)
+- Notes: Used to indicate idle state on the LocoNet bus; toString() implemented for diagnostics.
