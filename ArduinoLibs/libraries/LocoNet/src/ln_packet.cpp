@@ -102,7 +102,7 @@ LocoNet::LNPacket::LNPacket( LN_OP_CODE opc ) {
 ;
 
 LocoNet::LNPacket::~LNPacket() {
-	LNPDEBUGLN("Freeing Packet:" + this->repr ());
+	LNPDEBUGLN("Freeing Packet:" + this->toString ());
 }
 ;
 
@@ -335,7 +335,7 @@ void LocoNet::LNPacket::setaddr( uint addr ) {
 			break;
 	}
 	this->setCheckSum ();
-	LNPDEBUGF("Address to %d should be %d\n", this->getaddr (), addr); LNPDEBUGLN(this->repr ().c_str ());
+	LNPDEBUGF("Address to %d should be %d\n", this->getaddr (), addr); LNPDEBUGLN(this->toString ().c_str ());
 }
 ;
 

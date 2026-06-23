@@ -31,7 +31,7 @@ LN_FAST_CLOCK_SLOT_DATA::LN_FAST_CLOCK_SLOT_DATA() :LN_WR_SL_DATA() {
 
 LN_FAST_CLOCK_SLOT_DATA::LN_FAST_CLOCK_SLOT_DATA( LNPacket &packet ) :LN_WR_SL_DATA(packet) {
 	// packet-based ctor; assume packet already follows format
-}n
+}
 LN_FAST_CLOCK_SLOT_DATA::LN_FAST_CLOCK_SLOT_DATA( packet_data &pdata ) :LN_WR_SL_DATA(pdata) {
 	// raw data ctor
 }
