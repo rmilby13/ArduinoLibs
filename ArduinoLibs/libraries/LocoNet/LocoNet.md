@@ -1,0 +1,26 @@
+- This library is to implement classes to store LocoNet data on the Arduino microprocessor.
+- This library should be usable from the Arduino IDE or other Arduino compiler environment.
+- A PDF of the official Loconet Spec can be found in loconetpersonaledition.pdf
+- The LocoNet class is the management class for this library
+    - This should control the following
+        - Open and Closing the connection to hardware
+        - Reading data from the hardware
+        - Writing data to the hardware
+    - The first chipset that will be used is RP2040.
+        - The RP2040 should use the PIO for reading and writing data to and from the hardware pins
+    - The second method will be a LocoNet TCP connection.
+        - This will be designed to work with JRMI's Loconet over TCP protocol
+        - This will implenented in another library that will call this library. See the TCPLocoNet library in this repository.
+    - The third will be an Arduino Pro Mini 328.
+        - This should not be implemented yet, but keep this in mind when implementing other hardware methods.
+        - There is example open source code that can be referenced for implementation.
+- This library should strive to minimize the memory used. Packet data should be stored as raw data and the values pulled from the data on demand and not stored seperately.
+    - Lists, FIFO queues, etc should be used. Preallocated memory that will be unused should be avoided. Memory on many microprocessors can be very limited, so limiting unnessiary reservation of memory is imporatant.
+    - Not allowing queues, etc from filling memory is the responsibiliy of the calling code. 
+    - Exceptions and/or error results should gracefully be returned if an out of memory scenario occurs.
+- All packet types should be a decentant of the LNPacket class. 
+    - Additional information on Loconet Packet types and the definitions can be found at https://www.rocrail.online/doku.php?id=loconet:ln-pe-en
+        - This web page has been stored in loconet_ln-pe-en.pdf
+        - The parameters page refered to has been stored in loconet_lnpe-parms-en.pdf
+    - Packet types will be described in it's own file in the ./OPC/ directory
+

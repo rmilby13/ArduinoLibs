@@ -1,0 +1,384 @@
+6/11/26, 9:55 AM                                         loconet:lnpe-parms-en [Innovative Model Railroad Control System]
+
+
+
+                                                Innovative Model Railroad Control System
+
+
+
+  LocoNet Parameter Summary
+  Content → Command Stations → Digitrax LocoNet
+
+           Protocol | Command Stations | Interfaces | Devices | Wiring
+           Parameters
+
+
+
+
+  Copyright
+  LocoNet® Personal Use version definitions 1.0
+  All Copyrights and rights reserved, Digitrax 1997
+
+
+
+
+  Parameters
+
+     Name                         Description                                             Bits/Range
+    ADR        7 bit loco address                                      short address, CV18 if ADR2 > 0
+    ADR2       7 bit high loco address                                 0=short address, CV17
+    SW1        7 ls switch address bits                                0,A6,A5,A4,A3,A2,A1,A0
+    SW2        4 ms switch address and control bits                    0,0,DIR,ON,A10,A9,A8,A7
+               DIR, switch direction                                   1=closed(green), 0=thrown(red)
+               ON, switch activation                                   output 1=ON, 0=OFF
+    SLOT       7 bit slot number                                       0..127
+    SRC        7 bit source slot number                                0..127
+
+    DEST       7 bit destination slot number                           0..127
+    SL1        7 bit slave slot number                                 0..127
+    SL2        7 bit master slot number                                0..127
+    SPD                                                        speed   0x00=SPEED 0 ,STOP
+                                                                       0x01=SPEED 0 EMERGENCY stop
+                                                                       0x02-0x7F increasing SPEED,0x7F=MAX speed
+    DIRF       loco direction and functions(4)                         0,0,DIR,F0,F4,F3,F2,F1
+    SND        slot sound                                              0,0,0,0,F8,F7,F6,F5
+    STAT1      slot status containing speed steps                      See below
+
+
+https://www.rocrail.online/doku.php?id=loconet:lnpe-parms-en                                                                1/8
+6/11/26, 9:55 AM                                         loconet:lnpe-parms-en [Innovative Model Railroad Control System]
+
+     Name                         Description                                               Bits/Range
+    SS2        slot status 2                                         0,0,0,0,D3,D2,0,D0
+               D0                                                    1=this slot has suppressed ADV consist
+               D2                                                    1=expansion ID1/2 is not ID usage
+               D3                                                    1=expansion IN ID1/2, 0=encoded alias
+    LOPC       copy of opcode                                        bit 7 is set to zero
+    ACK1       response code                                         0=failed
+    IN1        sensor address                                        0,A6,A5,A4,A3,A2,A1,A0
+    IN2        sensor address and status                             0,X,I,L,A10,A9,A8,A7
+               X, control bit                                        0=reserved for future
+               I, input source                                       0=DS54, 1=switch
+               L, sensor level                                       0=low, 1=high
+    SN1        turnout sensor address                                0,A6,A5,A4,A3,A2,A1,A0
+    SN2        turnout sensor address and status                     0,1,I,L,A10,A9,A8,A7
+               I, input source                                       0=aux, 1=switch
+               L, sensor level                                       0=low, 1=high
+    SN2        alternately turnout sensor address and status         0,0,C,T,A10,A9,A8,A7
+               C, closed output                                      0=OFF, 1=ON
+               T, thrown output                                      0=OFF, 1=ON
+
+    ID1        throttle/PC ID if SS2.4=1                             7 bit ls
+    ID2        throttle/PC ID if SS2.4=1                             7 bit ms
+
+
+
+
+  Slot Status 1
+
+           D7-SL_SPURGE
+                1=SLOT purge en,ALSO adrSEL (INTERNAL use only, not seen on NET!)
+                CONDN/CONUP: bit encoding-Control double linked Consist List
+
+
+
+  2 BITS for Consist
+
+           D6-SL_CONUP
+           D3-SL_CONDN
+                11=LOGICAL MID CONSIST , Linked up AND down
+                10=LOGICAL CONSIST TOP, Only linked downwards
+                01=LOGICAL CONSIST SUB-MEMBER, Only linked upwards
+                00=FREE locomotive, no CONSIST indirection/linking
+                ALLOWS “CONSISTS of CONSISTS”. Uplinked means that Slot SPD number is now SLOT adr of SPD/DIR
+                and STATUS of consist. i.e. is an Indirect pointer. This Slot has same BUSY/ACTIVE bits as TOP of Consist. TOP
+                is loco with SPD/DIR for whole consist. (top of list). BUSY/ACTIVE: bit encoding for SLOT activity
+
+https://www.rocrail.online/doku.php?id=loconet:lnpe-parms-en                                                                 2/8
+6/11/26, 9:55 AM                                         loconet:lnpe-parms-en [Innovative Model Railroad Control System]
+
+
+
+
+  2 BITS for BUSY/ACTIVE
+
+           D5-SL_BUSY
+           D4-SL_ACTIVE
+                11=IN_USE loco adr in SLOT -REFRESHED
+                10=IDLE loco adr in SLOT, not refreshed
+                01=COMMON loco adr IN SLOT, refreshed
+                00=FREE SLOT, no valid DATA, not refreshed
+
+
+
+  3 BITS for Decoder TYPE encoding for this SLOT
+
+           D2-SL_SPDEX
+           D1-SL_SPD14
+           D0-SL_SPD28
+                010=14 step MODE
+                001=28 step. Generate Trinary packets for this Mobile ADR
+                000=28 step/ 3 BYTE PKT regular mode
+                011=128 speed mode packets
+                111=128 Step decoder, Allow Advanced DCC consisting
+                100=28 Step decoder ,Allow Advanced DCC consisting
+
+
+
+
+  Slots
+
+    Nr.            Description
+              0    dispatch
+       1 - 119     active locos
+    120 - 127      reserved for System and Master control
+           123     Fast Clock
+           124     Programming Track
+           127     Command Station Options
+
+
+
+
+  Programmer track
+  The programmer track is accessed as Special slot #124 ( $7C, 0x7C). It is a full asynchronous shared system resource.
+  To start Programmer task, write to slot 124. There will be an immediate LACK acknowledge that indicates what programming
+  will be allowed. If a valid programming task is started, then at the final (asynchronous) programming completion, a Slot read
+  <E7> from slot 124 will be sent. This is the final task status reply.
+
+  Parameters
+
+
+
+https://www.rocrail.online/doku.php?id=loconet:lnpe-parms-en                                                                      3/8
+6/11/26, 9:55 AM                                         loconet:lnpe-parms-en [Innovative Model Railroad Control System]
+
+     Name                    Description                                                         Bits/Range
+    ACK1¹          response code                           0=busy/aborted, 1=accepted(OPC_SL_RD_DATA), 0x40=accepted
+                                                           blind(OPC_SL_RD_DATA), 0x7F=not implemented
+
+    PCMD           programmer command (0 will              0,WR,BM,TY1,TY0,OPS,0,0
+                   abort current operation)
+                   WR, Write/Read                          1=Write, 0=Read
+                   MD, Byte mode                           1=byte operation, 0=bit operation (if possible)
+                   OPS, Ops Mode                           1=Mainline, 0=PT
+    PSTAT²         programmer error flags                  0,0,0,0,D3,D2,D1,D0
+                   D3                                      1=User aborted
+                   D2                                      1=No read ack
+                   D1                                      1=No write ack
+                   D0                                      1=Programming track empty
+    HOPSA          operations mode programming             7 bit high addres, 0 if service mode (POM)
+
+    LOPSA          operations mode programming             7 bit low addres, 0 if service mode (POM)
+    CVH            CV#                                     0,0,CV9,CV8,0,0D7,CV7
+    CVL            CV#                                     0,CV6,CV5,CV4,CV3,CV2,CV1,CV0
+    DATA7          data                                    0,D6,D5,D4,D3,D2,D1,D0
+
+
+  ¹) Note that the <7F> code will occur in Operations Mode Read requests if the System is not configured for and has no Advanced
+  Acknowlegement detection installed.. Operations Mode requests can be made and executed whilst a current Service Mode
+  programming task is keeping the Programming track BUSY. If a Programming request is rejected, delay and resend the complete
+  request later. Some readback operations can keep the Programming track busy for up to a minute. Multiple devices, throttles/PC's
+  etc, can share and sequentially use the Programming track as long as they correctly interpret the response messages . Any Slot
+  RD from the master will also contain the Programmer Busy status in bit 3 of the <TRK> byte.
+
+  ²) This <E7> response is issued whenever a Programming task is completed. It echos most of the request information and returns
+  the PSTAT status code to indicate how the task completed. If a READ was requested <DATA7> and <CVH> contain the returned
+  data, if the PSTAT indicates a successful readback (typically =0). Note that if a Paged Read fails to detect a successful Page write
+  acknowledge when first setting the Page register, the read will be aborted, showing no Write acknowledge flag D1=1
+
+
+
+
+  Type codes
+
+    Byte Mode        Ops Mode       TY1     TY0      Meaning
+
+                1               0       0       0          Paged mode byte Read/Write on Service Track
+                1               0       0       0          Paged mode byte Read/Write on Service Track
+                1               0       0       1          Direct mode byteRead/Write on Service Track
+                0               0       0       1              Direct mode bit Read/Write on Service Track
+                x               0       1       0    Physical Register byte Read/Write on Service Track
+
+
+https://www.rocrail.online/doku.php?id=loconet:lnpe-parms-en                                                                         4/8
+6/11/26, 9:55 AM                                         loconet:lnpe-parms-en [Innovative Model Railroad Control System]
+
+    Byte Mode           Ops Mode    TY1     TY0      Meaning
+                x               0       1       1                         Service Track- reserved function
+                1               1       0       0                   Ops mode Byte program, no feedback
+                1               1       0       1                       Ops mode Byte program, feedback
+                0               1       0       0                     Ops mode Bit program, no feedback
+                0               1       0       1                         Ops mode Bit program, feedback
+
+
+
+
+  Multi Sense
+  Power and transponding information is brought with the OPC_MULTI_SENSE opcode.
+
+  Power
+
+
+    Variable        Value
+    ARG1            ?
+    ARG2            ?
+    ARG3            ?
+
+    ARG4            ?
+
+
+
+
+  Transponding
+
+
+    Variable        Value
+    ARG1            type, present/absent, and high part board address
+    ARG2            low part board address and Zone A to H in the lower 4 bits
+    ARG3            high part of transponding mobile decoder address
+    ARG4            low part of transponding mobile decoder address
+
+
+
+
+  Functions 9-12
+
+    Digitrax                                                                 Uhlenbrock
+    Variable        Value                                                    Variable     Value
+    OPC             OPC_IMM_PACKET                                           OPC          OPC_UHLI_FUN
+    REPS            0x24 for short and 0x34 for long address                 Arg1         0x20
+    DHI             0x02 or 0x04 + high bits of address and functions        Arg2         Slot#
+
+
+https://www.rocrail.online/doku.php?id=loconet:lnpe-parms-en                                                                5/8
+6/11/26, 9:55 AM                                         loconet:lnpe-parms-en [Innovative Model Railroad Control System]
+
+    IM1            long address Lo                                           Arg3         0x07
+    IM2            long address Hi                                           Arg4         f9=0x10, f10=0x20, f11=0x40
+    IM3            0x20 + function bits & 0x7f
+    IM4            0x00
+    IM5            0x00
+    IM1            short address
+    IM2            0x20 + function bits & 0x7f
+    IM3            0x00
+    IM4            0x00
+    IM5            0x00
+
+
+
+
+  Functions 13-20
+
+    Digitrax                                                               Uhlenbrock
+    Variable       Value                                                   Variable      Value
+
+    OPC            OPC_IMM_PACKET                                          OPC           OPC_UHLI_FUN
+    REPS           0x34 for short and 0x44 for long address                Arg1          0x20
+    DHI            0x02 or 0x04 + high bits of address and                 Arg2          Slot#
+                   functions
+    IM1            long address Lo                                         Arg3          0x05=f12+f20+f28, 0x08=f13-f19
+    IM2            long address Hi                                         Arg4                  f12=0x10, f20=0x20, f28=0x40, f13=0x01…
+                                                                                                                                 f19=0x40
+    IM3            0x5E
+    IM4            function bits & 0x7f
+    IM5            0x00
+    IM1            short address
+    IM2            0x5E
+    IM3            function bits & 0x7f
+    IM4            0x00
+    IM5            0x00
+
+
+
+
+  Functions 21-28
+
+    Digitrax                                                       Uhlenbrock
+    Variable       Value                                           Variable      Value
+
+https://www.rocrail.online/doku.php?id=loconet:lnpe-parms-en                                                                                6/8
+6/11/26, 9:55 AM                                         loconet:lnpe-parms-en [Innovative Model Railroad Control System]
+
+    OPC            OPC_IMM_PACKET                                  OPC           OPC_UHLI_FUN
+    REPS           0x34 for short and 0x44 for long address        Arg1          0x20
+    DHI            0x06 + high bits of address and functions       Arg2          Slot#
+    IM1            long address Lo                                 Arg3          0x09
+    IM2            long address Hi                                 Arg4          f21=0x01…f27=0x40
+    IM3            0x5F
+
+    IM4            function bits & 0x7f
+    IM5            0x00
+    IM1            short address
+    IM2            0x5F
+    IM3            function bits & 0x7f
+    IM4            0x00
+    IM5            0x00
+
+
+
+
+  Fast Clock
+
+  The system FAST clock and parameters are implemented in Slot#123 <7B>.
+  Use <EF> to write new clock information, Slot read of 0x7B,<BB><7B>.., will return current System clock information, and
+  other throttles will update to this SYNC. Note that all attached display devices keep a current clock calculation based on this
+  SYNC read value, i.e. devices MUST not continuously poll the clock SLOT to generate time, but use this merely to restore
+  SYNC and follow current RATE etc. This clock slot is typically “pinged” or read SYNC'd every 70 to 100 seconds , by a single
+  user, so all attached devices can synchronise any phase drifts. Upon seeing a SYNC read, all devices should reset their local sub-
+  minute phase counter and invalidate the SYNC update ping generator.
+
+  Parameters
+
+            Name                                      Description                                                   Bits/Range
+    CLK_RATE                 Clock rate                                                         0=Freeze clock, 1=normal 1:1 rate, 10=10:1
+                                                                                                etc, max VALUE is 7F/128 to 1
+    FRAC_MINSH/L             FRAC mins hi/lo are a sub-minute counter , depending               This counter is reset when valid <E6><7B>
+                             on the CLOCK generator. Not for ext. usage.                        SYNC msg seen.
+    256-MINS_60              This is FAST clock MINUTES subtracted from 256.                    Modulo 0-59
+    256-HRS_24               This is FAST clock HOURS subtracted from 256.                      Modulo 0-23
+    DAYS                     number of 24 Hr clock rolls, positive count
+    CLK_CNTRL                Clock Control Byte                                                 D6- 1=This is valid Clock information,
+                                                                                                0=ignore this <E6><7B>, SYNC reply
+    ID1/2                    This is device ID last setting the clock.                          <00><00> shows no set has happened, <7F>
+                                                                                                <7x> are reserved for PC access
+
+
+
+https://www.rocrail.online/doku.php?id=loconet:lnpe-parms-en                                                                                 7/8
+6/11/26, 9:55 AM                                         loconet:lnpe-parms-en [Innovative Model Railroad Control System]
+
+
+
+
+  Stationary Broadcast Command
+  Note that a 3 byte DCC track packet configured as:
+
+  <sync> ,<1011-1111>,<1000-D c b a > <ecb>
+
+  is a DCC Broadcast Address to Stationary decoders. Broadcast LocoNet Switch adr is then
+
+  <SW2>=<0,0,a,D-1,1,1,1>, <SW1>=<0,1,1,1-1,0,c,b>
+
+
+
+
+  Stationary Interrogate Command
+  The DCC packet
+
+  <sync>,<1011-1111>,<1100-D c b a> <ecb>
+
+  is an Interrogation for all DS54's. This causes a 2 LocoNet <B1> messages encoding both Output state and Input state, for each
+  sensor adr a/b/c encodes. Interrogate LocoNet Switch adr is
+
+  <SW2>=<0,0,a,1-0,1,1,1>, <SW1>= <0,1,1,1-1,0,c,b>
+
+  This is generated by DCS100 at power ON, and scans all 8 inputs of all DS54's.
+
+
+                                                                          loconet/lnpe-parms-en.txt · Last modified: 2026/02/12 12:20 by 127.0.0.1
+
+
+
+
+https://www.rocrail.online/doku.php?id=loconet:lnpe-parms-en                                                                                     8/8
+
