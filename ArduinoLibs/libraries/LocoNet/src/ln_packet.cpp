@@ -134,6 +134,18 @@ LocoNet::LN_OP_CODE LocoNet::LNPacket::get_opcode(byte firstByte){
 		case DigiTraxOpcGpon:
 			oc = LN_OPC_GPON;
 			break;
+		case DigiTraxOpcIdle:
+			oc = LN_OPC_IDLE;
+			break;
+		case DigiTraxOpcLocoSpd:
+			oc = LN_OPC_LOCO_SPD;
+			break;
+		case DigiTraxOpcLocoDirF:
+			oc = LN_OPC_LOCO_DIRF;
+			break;
+		case DigiTraxOpcLocoSnd:
+			oc = LN_OPC_LOCO_SND;
+			break;
 		case DigiTraxOpcSwReq:
 			oc = LN_OPC_SW_REQ;
 			break;
@@ -143,11 +155,26 @@ LocoNet::LN_OP_CODE LocoNet::LNPacket::get_opcode(byte firstByte){
 		case DigiTraxOpcInputRep:
 			oc = LN_OPC_INPUT_REP;
 			break;
-		case DigiTraxOpcMultiSense:
-			oc = LN_OPC_MULTI_SENSE;
+		case DigiTraxOpcSlotStat1:
+			oc = LN_OPC_SLOT_STAT1;
 			break;
-		case DigiTraxOpcImmPacket:
-			oc = LN_OPC_IMM_PACKET;
+		case DigiTraxOpcLongAck:
+			oc = LN_OPC_LONG_ACK;
+			break;
+		case DigiTraxOpcConsistFunc:
+			oc = LN_OPC_CONSIST_FUNC;
+			break;
+		case DigiTraxOpcLinkSlots:
+			oc = LN_OPC_LINK_SLOTS;
+			break;
+		case DigiTraxOpcUnlinkSlots:
+			oc = LN_OPC_UNLINK_SLOTS;
+			break;
+		case DigiTraxOpcMoveSlots:
+			oc = LN_OPC_MOVE_SLOTS;
+			break;
+		case DigiTraxOpcRqSlData:
+			oc = LN_OPC_RQ_SL_DATA;
 			break;
 		case DigiTraxOpcSwState:
 			oc = LN_OPC_SW_STATE;
@@ -155,8 +182,23 @@ LocoNet::LN_OP_CODE LocoNet::LNPacket::get_opcode(byte firstByte){
 		case DigiTraxOpcSwAck:
 			oc = LN_OPC_SW_ACK;
 			break;
-		case DigiTraxOpcLongAck:
-			oc = LN_OPC_LONG_ACK;
+		case DigiTraxOpcMultiSense:
+			oc = LN_OPC_MULTI_SENSE;
+			break;
+		case DigiTraxOpcLissyRep:
+			oc = LN_OPC_LISSY_REP;
+			break;
+		case DigiTraxOpcPeerXfer:
+			oc = LN_OPC_PEER_XFER;
+			break;
+		case DigiTraxOpcProg:
+			oc = LN_OPC_PROG;
+			break;
+		case DigiTraxOpcImmPacket:
+			oc = LN_OPC_IMM_PACKET;
+			break;
+		case DigiTraxOpcSlRdData:
+			oc = LN_OPC_SL_RD_DATA;
 			break;
 		case DigiTraxOpcWrSlData:
 			oc = LN_OPC_WR_SL_DATA;
@@ -172,6 +214,12 @@ std::unique_ptr<LocoNet::LNPacket> LocoNet::LNPacket::factory(packet_data &pdata
     switch (LNPacket::get_opcode(pdata.at(0))){
         case LN_OPC_NOOP:
             return std::make_unique<LN_NOP>(pdata);
+        case LN_OPC_LOCO_SPD:
+            return std::make_unique<LN_LOCO_SPD>(pdata);
+        case LN_OPC_LOCO_DIRF:
+            return std::make_unique<LN_LOCO_DIRF>(pdata);
+        case LN_OPC_LOCO_SND:
+            return std::make_unique<LN_LOCO_SND>(pdata);
         case LN_OPC_SW_REQ:
             return std::make_unique<LN_SW_REQ>(pdata);
         case LN_OPC_SW_REP:
@@ -180,12 +228,32 @@ std::unique_ptr<LocoNet::LNPacket> LocoNet::LNPacket::factory(packet_data &pdata
             return std::make_unique<LN_IMM_Packet>(pdata);
         case LN_OPC_INPUT_REP:
             return std::make_unique<LN_INPUT_REP>(pdata);
+        case LN_OPC_SLOT_STAT1:
+            return std::make_unique<LN_SLOT_STAT1>(pdata);
+        case LN_OPC_CONSIST_FUNC:
+            return std::make_unique<LN_CONSIST_FUNC>(pdata);
+        case LN_OPC_LINK_SLOTS:
+            return std::make_unique<LN_LINK_SLOTS>(pdata);
+        case LN_OPC_UNLINK_SLOTS:
+            return std::make_unique<LN_UNLINK_SLOTS>(pdata);
+        case LN_OPC_MOVE_SLOTS:
+            return std::make_unique<LN_MOVE_SLOTS>(pdata);
+        case LN_OPC_RQ_SL_DATA:
+            return std::make_unique<LN_RQ_SL_DATA>(pdata);
         case LN_OPC_SW_STATE:
             return std::make_unique<LN_SW_State>(pdata);
         case LN_OPC_SW_ACK:
             return std::make_unique<LN_SW_ACK>(pdata);
         case LN_OPC_LONG_ACK:
             return std::make_unique<LN_Long_Ack>(pdata);
+        case LN_OPC_LISSY_REP:
+            return std::make_unique<LN_LISSY_REP>(pdata);
+        case LN_OPC_PEER_XFER:
+            return std::make_unique<LN_PEER_XFER>(pdata);
+        case LN_OPC_PROG:
+            return std::make_unique<LN_PROG>(pdata);
+        case LN_OPC_SL_RD_DATA:
+            return std::make_unique<LN_SL_RD_DATA>(pdata);
         case LN_OPC_WR_SL_DATA:
             switch (pdata[2]) {
                 case 0x7B: // Fast Clock Slot Data
@@ -203,6 +271,12 @@ std::unique_ptr<LocoNet::LNPacket> LocoNet::LNPacket::factory( LNPacket& packet)
     switch (packet.get_opcode()){
         case LN_OPC_NOOP:
             return std::make_unique<LN_NOP>(packet);
+        case LN_OPC_LOCO_SPD:
+            return std::make_unique<LN_LOCO_SPD>(packet);
+        case LN_OPC_LOCO_DIRF:
+            return std::make_unique<LN_LOCO_DIRF>(packet);
+        case LN_OPC_LOCO_SND:
+            return std::make_unique<LN_LOCO_SND>(packet);
         case LN_OPC_SW_REQ:
             return std::make_unique<LN_SW_REQ>(packet);
         case LN_OPC_SW_REP:
@@ -211,12 +285,32 @@ std::unique_ptr<LocoNet::LNPacket> LocoNet::LNPacket::factory( LNPacket& packet)
             return std::make_unique<LN_IMM_Packet>(packet);
         case LN_OPC_INPUT_REP:
             return std::make_unique<LN_INPUT_REP>(packet);
+        case LN_OPC_SLOT_STAT1:
+            return std::make_unique<LN_SLOT_STAT1>(packet);
+        case LN_OPC_CONSIST_FUNC:
+            return std::make_unique<LN_CONSIST_FUNC>(packet);
+        case LN_OPC_LINK_SLOTS:
+            return std::make_unique<LN_LINK_SLOTS>(packet);
+        case LN_OPC_UNLINK_SLOTS:
+            return std::make_unique<LN_UNLINK_SLOTS>(packet);
+        case LN_OPC_MOVE_SLOTS:
+            return std::make_unique<LN_MOVE_SLOTS>(packet);
+        case LN_OPC_RQ_SL_DATA:
+            return std::make_unique<LN_RQ_SL_DATA>(packet);
         case LN_OPC_SW_STATE:
             return std::make_unique<LN_SW_State>(packet);
         case LN_OPC_SW_ACK:
             return std::make_unique<LN_SW_ACK>(packet);
         case LN_OPC_LONG_ACK:
             return std::make_unique<LN_Long_Ack>(packet);
+        case LN_OPC_LISSY_REP:
+            return std::make_unique<LN_LISSY_REP>(packet);
+        case LN_OPC_PEER_XFER:
+            return std::make_unique<LN_PEER_XFER>(packet);
+        case LN_OPC_PROG:
+            return std::make_unique<LN_PROG>(packet);
+        case LN_OPC_SL_RD_DATA:
+            return std::make_unique<LN_SL_RD_DATA>(packet);
         case LN_OPC_WR_SL_DATA:
             switch (packet.data.at(2)) {
                 case 0x7B: // Fast Clock Slot Data
@@ -449,6 +543,18 @@ byte LocoNet::LNPacket::getLen( LN_OP_CODE opc ) {
 		case LN_OPC_GPON:
 			ret = LNPacket::getLen (DigiTraxOpcGpon);
 			break;
+		case LN_OPC_IDLE:
+			ret = LNPacket::getLen (DigiTraxOpcIdle);
+			break;
+		case LN_OPC_LOCO_SPD:
+			ret = LNPacket::getLen (DigiTraxOpcLocoSpd);
+			break;
+		case LN_OPC_LOCO_DIRF:
+			ret = LNPacket::getLen (DigiTraxOpcLocoDirF);
+			break;
+		case LN_OPC_LOCO_SND:
+			ret = LNPacket::getLen (DigiTraxOpcLocoSnd);
+			break;
 		case LN_OPC_SW_REQ:
 			ret = LNPacket::getLen (DigiTraxOpcSwReq);
 			break;
@@ -458,10 +564,52 @@ byte LocoNet::LNPacket::getLen( LN_OP_CODE opc ) {
 		case LN_OPC_INPUT_REP:
 			ret = LNPacket::getLen (DigiTraxOpcInputRep);
 			break;
+		case LN_OPC_SLOT_STAT1:
+			ret = LNPacket::getLen (DigiTraxOpcSlotStat1);
+			break;
+		case LN_OPC_LONG_ACK:
+			ret = LNPacket::getLen (DigiTraxOpcLongAck);
+			break;
+		case LN_OPC_CONSIST_FUNC:
+			ret = LNPacket::getLen (DigiTraxOpcConsistFunc);
+			break;
+		case LN_OPC_LINK_SLOTS:
+			ret = LNPacket::getLen (DigiTraxOpcLinkSlots);
+			break;
+		case LN_OPC_UNLINK_SLOTS:
+			ret = LNPacket::getLen (DigiTraxOpcUnlinkSlots);
+			break;
+		case LN_OPC_MOVE_SLOTS:
+			ret = LNPacket::getLen (DigiTraxOpcMoveSlots);
+			break;
+		case LN_OPC_RQ_SL_DATA:
+			ret = LNPacket::getLen (DigiTraxOpcRqSlData);
+			break;
+		case LN_OPC_SW_STATE:
+			ret = LNPacket::getLen (DigiTraxOpcWrSlData);
+			break;
+		case LN_OPC_SW_ACK:
+			ret = LNPacket::getLen (DigiTraxOpcSwAck);
+			break;
+		case LN_OPC_MULTI_SENSE:
+			ret = LNPacket::getLen (DigiTraxOpcMultiSense);
+			break;
+		case LN_OPC_LISSY_REP:
+			ret = LNPacket::getLen (DigiTraxOpcLissyRep);
+			break;
+		case LN_OPC_PEER_XFER:
+			ret = LNPacket::getLen (DigiTraxOpcPeerXfer);
+			break;
+		case LN_OPC_PROG:
+			ret = LNPacket::getLen (DigiTraxOpcProg);
+			break;
+		case LN_OPC_SL_RD_DATA:
+			ret = LNPacket::getLen (DigiTraxOpcSlRdData);
+			break;
 		case LN_OPC_IMM_PACKET:
 			ret = LNPacket::getLen (DigiTraxOpcImmPacket);
 			break;
-		case LN_OPC_SW_STATE:
+		case LN_OPC_WR_SL_DATA:
 			ret = LNPacket::getLen (DigiTraxOpcWrSlData);
 			break;
 		default:

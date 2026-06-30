@@ -1,0 +1,244 @@
+loconet_ln-pe-en.txt:8:  LocoNet Opcode Summary
+loconet_ln-pe-en.txt:11:         Protocol | Command Stations | Interfaces | Fast Clock | Throttles | Option Switches | Wiring
+loconet_ln-pe-en.txt:29:  The data bytes on LocoNet® are defined as 8 bit data with the most significant bit (transmitted last in the 8 bit octet) as an OPCODE flag bit. If the MS bit , D7, is 1 the 7 least significant bits are
+loconet_ln-pe-en.txt:30:  interpreted as a network OPCODE . The opcode byte may only occur once in a valid message and is the FIRST byte of a message. All the remaining bytes in the message must have a most
+loconet_ln-pe-en.txt:36:  The OPCODES may be examined to determine message length and if subsequent response message is required. Data bits D6 and D5 encode the message length. D3=1 implies Follow-on
+loconet_ln-pe-en.txt:46:  The A,B,C,D,F are bits available to encode 32 OPCODES per message length.
+loconet_ln-pe-en.txt:60:  To request a MOBILE or LOCOMOTIVE decoder task in the refresh stack, a Throttle device requests a LOCOMOTIVE address for use,( opcode <BF>,<loco adr hi>,<loco adr lo>, <chk> ). The
+loconet_ln-pe-en.txt:61:  Master ( or PC in a Limited Master environment) responds with a SLOT DATA READ for the SLOT ,( opcode <E7>,,) ,that contains this Locomotive address and all of its state information. If
+loconet_ln-pe-en.txt:63:  DATA READ. If no inactive slots are free to load the NEW locomotive address, the response will be the Long Acknowledgment ,(opcode <B4>,) , with a “fail” code, 0.
+loconet_ln-pe-en.txt:69:  The throttle must then examine the SLOT READ DATA bytes to work out how to process the Master response. If the STATUS1 byte shows the SLOT to be COMMON, IDLE or NEW the
+loconet_ln-pe-en.txt:70:  throttle may change the SLOT to IN_USE by performing a NULL MOVE instruction ,(opcode <BA>,<slotX>,<slotX>,<chk> ) on this SLOT. This activation mechanism is used to guarantee
+loconet_ln-pe-en.txt:103:  information will be the response. If there is NO DISPATCH slot, the response will be a LONG ACK ( opc <B4>,,) with the Fail code,00.
+loconet_ln-pe-en.txt:112:  Opcodes for access to an auxiliary Service mode Programming Track are included. These requests are not entered in the main DCC packet stream .
+loconet_ln-pe-en.txt:114:  Note that several confusing expansions and opcode sequences have been stripped from this LocoNet® version. An experimenter who implements this protocol correctly should have no problems
+loconet_ln-pe-en.txt:121:  2 Byte Message Opcodes
+loconet_ln-pe-en.txt:124:  <OPC>,<CKSUM>
+loconet_ln-pe-en.txt:126:           Opcode                                                            Response
+loconet_ln-pe-en.txt:128:   OPC_IDLE          0x85    FORCE IDLE state, B'cast emerg. STOP        -          -
+loconet_ln-pe-en.txt:129:   OPC_GPON          0x83    GLOBAL power ON request                     -          -
+loconet_ln-pe-en.txt:130:   OPC_GPOFF         0x82    GLOBAL power OFF req                        -          -
+loconet_ln-pe-en.txt:131:   OPC_BUSY          0x81    MASTER busy code, NUL                       -          -
+loconet_ln-pe-en.txt:136:  4 Byte Message Opcodes
+loconet_ln-pe-en.txt:139:  <OPC>,<ARG1>,<ARG2>,<CKSUM>
+loconet_ln-pe-en.txt:142:                  Opcode                                                                                  Arguments                                        Response
+loconet_ln-pe-en.txt:144:   OPC_LOCO_ADR                 0xBF    Request loco address, if not found master puts address in     0        ADR       OPC_SL_RD_DATA                    OPC_LONG_ACK
+loconet_ln-pe-en.txt:146:   OPC_SW_ACK                   0xBD    Request switch with acknoledge function.                      SW1      SW2       OPC_LONG_ACK,                     OPC_LONG_ACK, ACK1=0x00
+loconet_ln-pe-en.txt:147:                                                                                                                         ACK1=0x7F
+loconet_ln-pe-en.txt:148:   OPC_SW_STATE                 0xBC    Request state of switch.                                      SW1      SW2       OPC_LONG_ACK,                     OPC_LONG_ACK, ACK1=0x00
+loconet_ln-pe-en.txt:149:                                                                                                                         ACK1=0x7F
+loconet_ln-pe-en.txt:150:   OPC_RQ_SL_DATA               0xBB    Request slot data/status block                                SLOT     0         OPC_SL_RD_DATA
+loconet_ln-pe-en.txt:151:   OPC_MOVE_SLOTS               0xBA    Move slot SRC to DST                                          SRC      DST       OPC_SL_RD_DATA
+loconet_ln-pe-en.txt:152:   OPC_LINK_SLOTS               0xB9    Link slot ARG1 to slot ARG2                                   SL1      SL2       OPC_SL_RD_DATA
+loconet_ln-pe-en.txt:153:   OPC_UNLINK_SLOTS             0xB8    Unlink slot ARG1 from slot ARG2                               SL1      SL2       OPC_SL_RD_DATA
+loconet_ln-pe-en.txt:154:   OPC_CONSIST_FUNC             0xB6    Set FUNC bits in a CONSIST uplink element                     SLOT     DIRF
+loconet_ln-pe-en.txt:158:   OPC_SLOT_STAT1              0xB5     Write slot stat1                                                     SLOT         STAT1
+loconet_ln-pe-en.txt:159:   OPC_LONG_ACK                0xB4     Long acknowledge                                                     LOPC         ACK1
+loconet_ln-pe-en.txt:160:   OPC_INPUT_REP               0xB2     General sensor input codes                                           IN1          IN2
+loconet_ln-pe-en.txt:161:   OPC_SW_REP                  0xB1     Turnout sensor state report                                          SN1          SN2
+loconet_ln-pe-en.txt:162:   OPC_SW_REQ                  0xB0     Request switch function                                              SW1          SW2                                                 OPC_LONG_ACK, LOPC=0x30,
+loconet_ln-pe-en.txt:163:                                                                                                                                                                              ACK1=0x00
+loconet_ln-pe-en.txt:165:   OPC_LOCO_SND                0xA2     Set slot sound function                                              SLOT         SND
+loconet_ln-pe-en.txt:166:   OPC_LOCO_DIRF               0xA1     Set slot direction, function 0-4 state                               SLOT         DIRF
+loconet_ln-pe-en.txt:167:   OPC_LOCO_SPD                0xA0     Set slot speed                                                       SLOT         SPD
+loconet_ln-pe-en.txt:172:  6 Byte Message Opcodes
+loconet_ln-pe-en.txt:175:  <OPC>,<ARG1>,<ARG2>,<ARG3>,<ARG4>,<CKSUM>
+loconet_ln-pe-en.txt:179:   OPC_MULTI_SENSE        0xD0        power management and transponding            type      zone and section      addr                 addr
+loconet_ln-pe-en.txt:180:   OPC_UHLI_FUN           0xD4        Function 9-28 by Uhlenbrock                  0x20      slot                  function group       function
+loconet_ln-pe-en.txt:185:  Variable Byte Message Opcodes
+loconet_ln-pe-en.txt:188:  <OPC>,<COUNT>,<ARG1>,<ARG2>,<ARG3>,...,<ARG(COUNT-3)>,<CKSUM>
+loconet_ln-pe-en.txt:190:             Opcode                                                                                                                    Arguments
+loconet_ln-pe-en.txt:193:   OPC_WR_SL_DATA         0xEF    Write slot          0x0E            SLOT#        STAT1            ADR                   SPD                  DIRF          TRK        SS2         ADR2    SND             ID1       ID2
+loconet_ln-pe-en.txt:195:   OPC_WR_SL_DATA         0xEF    Write PT slot       0x0E            0x7C         PCMD             0                     HOPSA                LOPSA         TRK        CVH         CVL     DATA7           0         0
+loconet_ln-pe-en.txt:197:   OPC_WR_SL_DATA         0xEF    Write Fast          0x0E            0x7B         CLK_RATE         FRAC_MINSL            FRAC_MINSH           256-          TRK        256-        DAYS    CLK_CNTR        ID1       ID2
+loconet_ln-pe-en.txt:200:   OPC_SL_RD_DATA         0xE7    Slot data           0x0E            SLOT#        STAT1            ADR                   SPD                  DIRF          TRK        SS2         ADR2    SND             ID1       ID2
+loconet_ln-pe-en.txt:202:   -                      0xE6    Programming         0x10/0x15
+loconet_ln-pe-en.txt:209:            Opcode                                                                                                                Arguments
+loconet_ln-pe-en.txt:211:   OPC_PEER_XFER        0xE5     Move 8 bytes peer to          0x10         SRC     DSTL         DSTH     PXCT1     D1          D2      D3         D4      PXCT2        D5         D6      D7       D8          -
+loconet_ln-pe-en.txt:217:               Opcode                                                                                       Arguments
+loconet_ln-pe-en.txt:220:   OPC_LISSY_REP                0xE4     Lissy IR report             0x08     0x00        high unit, direction   low unit       high addr      low addr      -          -
+loconet_ln-pe-en.txt:221:   OPC_WHEELCNT_REP             0xE4     Wheel counter report        0x08     0x40        high unit, direction   low unit       high count     low count     -          -
+loconet_ln-pe-en.txt:226:            Opcode                                                                                      Arguments
+loconet_ln-pe-en.txt:228:   OPC_LISSY_REP        0xE4    RFID-5 report       0x0C      0x41     addr. high    addr. low      RFID-0       RFID-1     RFID-2      RFID-3        RFID-4     RFID-HI       -
+loconet_ln-pe-en.txt:235:            Opcode                                                                                    Arguments
+loconet_ln-pe-en.txt:237:   OPC_LISSY_REP       0xE4   RFID-7 report   0x0E    0x41   addr. high   addr. low   RFID-0       RFID-1   RFID-2    RFID-3   RFID-4       RFID-5     RFID-6      RFID-HI      -
+loconet_ln-pe-en.txt:242:              Opcode                                                                            Arguments
+loconet_ln-pe-en.txt:244:   OPC_IMM_PACKET¹        0xED    Send n-byte packet immediate.   0x0B    0x7F    REPS       DH1     IM1    IM2      IM3     IM4     IM5      OPC_LONG_ACK
+loconet_ln-pe-en.txt:245:                                                                                                                                              ACK1=0x7F if not limited
+loconet_ln-pe-en.txt:247:                                                                                                                                              ACK1=0x00 If busy
+loconet_lnpe-parms-en.txt:40:    SPD                                                        speed   0x00=SPEED 0 ,STOP
+loconet_lnpe-parms-en.txt:41:                                                                       0x01=SPEED 0 EMERGENCY stop
+loconet_lnpe-parms-en.txt:42:                                                                       0x02-0x7F increasing SPEED,0x7F=MAX speed
+loconet_lnpe-parms-en.txt:56:    LOPC       copy of opcode                                        bit 7 is set to zero
+loconet_lnpe-parms-en.txt:94:                and STATUS of consist. i.e. is an Indirect pointer. This Slot has same BUSY/ACTIVE bits as TOP of Consist. TOP
+loconet_lnpe-parms-en.txt:95:                is loco with SPD/DIR for whole consist. (top of list). BUSY/ACTIVE: bit encoding for SLOT activity
+loconet_lnpe-parms-en.txt:103:  2 BITS for BUSY/ACTIVE
+loconet_lnpe-parms-en.txt:105:           D5-SL_BUSY
+loconet_lnpe-parms-en.txt:108:                10=IDLE loco adr in SLOT, not refreshed
+loconet_lnpe-parms-en.txt:135:           123     Fast Clock
+loconet_lnpe-parms-en.txt:143:  The programmer track is accessed as Special slot #124 ( $7C, 0x7C). It is a full asynchronous shared system resource.
+loconet_lnpe-parms-en.txt:156:    ACK1¹          response code                           0=busy/aborted, 1=accepted(OPC_SL_RD_DATA), 0x40=accepted
+loconet_lnpe-parms-en.txt:157:                                                           blind(OPC_SL_RD_DATA), 0x7F=not implemented
+loconet_lnpe-parms-en.txt:179:  programming task is keeping the Programming track BUSY. If a Programming request is rejected, delay and resend the complete
+loconet_lnpe-parms-en.txt:180:  request later. Some readback operations can keep the Programming track busy for up to a minute. Multiple devices, throttles/PC's
+loconet_lnpe-parms-en.txt:182:  RD from the master will also contain the Programmer Busy status in bit 3 of the <TRK> byte.
+loconet_lnpe-parms-en.txt:217:  Power and transponding information is brought with the OPC_MULTI_SENSE opcode.
+loconet_lnpe-parms-en.txt:248:    OPC             OPC_IMM_PACKET                                           OPC          OPC_UHLI_FUN
+loconet_lnpe-parms-en.txt:249:    REPS            0x24 for short and 0x34 for long address                 Arg1         0x20
+loconet_lnpe-parms-en.txt:250:    DHI             0x02 or 0x04 + high bits of address and functions        Arg2         Slot#
+loconet_lnpe-parms-en.txt:256:    IM1            long address Lo                                           Arg3         0x07
+loconet_lnpe-parms-en.txt:257:    IM2            long address Hi                                           Arg4         f9=0x10, f10=0x20, f11=0x40
+loconet_lnpe-parms-en.txt:258:    IM3            0x20 + function bits & 0x7f
+loconet_lnpe-parms-en.txt:259:    IM4            0x00
+loconet_lnpe-parms-en.txt:260:    IM5            0x00
+loconet_lnpe-parms-en.txt:262:    IM2            0x20 + function bits & 0x7f
+loconet_lnpe-parms-en.txt:263:    IM3            0x00
+loconet_lnpe-parms-en.txt:264:    IM4            0x00
+loconet_lnpe-parms-en.txt:265:    IM5            0x00
+loconet_lnpe-parms-en.txt:275:    OPC            OPC_IMM_PACKET                                          OPC           OPC_UHLI_FUN
+loconet_lnpe-parms-en.txt:276:    REPS           0x34 for short and 0x44 for long address                Arg1          0x20
+loconet_lnpe-parms-en.txt:277:    DHI            0x02 or 0x04 + high bits of address and                 Arg2          Slot#
+loconet_lnpe-parms-en.txt:279:    IM1            long address Lo                                         Arg3          0x05=f12+f20+f28, 0x08=f13-f19
+loconet_lnpe-parms-en.txt:280:    IM2            long address Hi                                         Arg4                  f12=0x10, f20=0x20, f28=0x40, f13=0x01…
+loconet_lnpe-parms-en.txt:281:                                                                                                                                 f19=0x40
+loconet_lnpe-parms-en.txt:282:    IM3            0x5E
+loconet_lnpe-parms-en.txt:283:    IM4            function bits & 0x7f
+loconet_lnpe-parms-en.txt:284:    IM5            0x00
+loconet_lnpe-parms-en.txt:286:    IM2            0x5E
+loconet_lnpe-parms-en.txt:287:    IM3            function bits & 0x7f
+loconet_lnpe-parms-en.txt:288:    IM4            0x00
+loconet_lnpe-parms-en.txt:289:    IM5            0x00
+loconet_lnpe-parms-en.txt:302:    OPC            OPC_IMM_PACKET                                  OPC           OPC_UHLI_FUN
+loconet_lnpe-parms-en.txt:303:    REPS           0x34 for short and 0x44 for long address        Arg1          0x20
+loconet_lnpe-parms-en.txt:304:    DHI            0x06 + high bits of address and functions       Arg2          Slot#
+loconet_lnpe-parms-en.txt:305:    IM1            long address Lo                                 Arg3          0x09
+loconet_lnpe-parms-en.txt:306:    IM2            long address Hi                                 Arg4          f21=0x01…f27=0x40
+loconet_lnpe-parms-en.txt:307:    IM3            0x5F
+loconet_lnpe-parms-en.txt:309:    IM4            function bits & 0x7f
+loconet_lnpe-parms-en.txt:310:    IM5            0x00
+loconet_lnpe-parms-en.txt:312:    IM2            0x5F
+loconet_lnpe-parms-en.txt:313:    IM3            function bits & 0x7f
+loconet_lnpe-parms-en.txt:314:    IM4            0x00
+loconet_lnpe-parms-en.txt:315:    IM5            0x00
+loconet_lnpe-parms-en.txt:320:  Fast Clock
+loconet_lnpe-parms-en.txt:322:  The system FAST clock and parameters are implemented in Slot#123 <7B>.
+loconet_lnpe-parms-en.txt:323:  Use <EF> to write new clock information, Slot read of 0x7B,<BB><7B>.., will return current System clock information, and
+loconet_lnpe-parms-en.txt:337:    256-MINS_60              This is FAST clock MINUTES subtracted from 256.                    Modulo 0-59
+loconet_lnpe-parms-en.txt:338:    256-HRS_24               This is FAST clock HOURS subtracted from 256.                      Modulo 0-23
+loconetpersonaledition.txt:59:"fast clock", even though the DT200 master did not itself support this. The soon to be released Digitrax
+loconetpersonaledition.txt:78:The normal LocoNet state is IDLE, with no data traffic unless a device has information to send. With no
+loconetpersonaledition.txt:168:Normal network "IDLE" is the "MARK" voltage state. Data is sent HALF DUPLEX and transmitters
+loconetpersonaledition.txt:183:receivers, and a new OPCODE will be scanned for re-synchronization.
+loconetpersonaledition.txt:203:A BUSY opcode is included to allow the master to keep the network active whilst it is performing a task
+loconetpersonaledition.txt:205:started until it has responded to the last message. In addition to the BUSY opcode, the master may simply
+loconetpersonaledition.txt:214:device should assert the SPACE of the start bit of the message OPCODE within 2 microseconds of
+loconetpersonaledition.txt:230:LocoNet to the level desired. Note that the message <81><7e> is a "time burner" NOP code sent by a
+loconetpersonaledition.txt:231:Master to restart the CD Backoff timers, and hence keep the network busy in a hardware sense. This
+loconetpersonaledition.txt:232:<81> opcode should thus be simply stripped and ignored.
+loconetpersonaledition.txt:280:8 bit octet) as an OPCODE flag bit. If the MS bit , D7, is 1 the 7 least significant bits are interpreted as a
+loconetpersonaledition.txt:281:network OPCODE . The opcode byte may only occur once in a valid message and is the FIRST byte of a
+loconetpersonaledition.txt:288:The OPCODES may be examined to determine message length and if subsequent response message is
+loconetpersonaledition.txt:291:    (Opcode Flag)
+loconetpersonaledition.txt:298:The A,B,C,D,F are bits available to encode 32 OPCODES per message length.
+loconetpersonaledition.txt:315:LOCOMOTIVE address for use,( opcode <BF>,<loco adr hi>,<loco adr lo>, <chk> ). The Master ( or PC
+loconetpersonaledition.txt:316:in a Limited Master environment) responds with a SLOT DATA READ for the SLOT ,( opcode <E7>,,)
+loconetpersonaledition.txt:320:free to load the NEW locomotive address, the response will be the Long Acknowledgment ,(opcode
+loconetpersonaledition.txt:330:Master response. If the STATUS1 byte shows the SLOT to be COMMON, IDLE or NEW the throttle
+loconetpersonaledition.txt:331:may change the SLOT to IN_USE by performing a NULL MOVE instruction ,(opcode
+loconetpersonaledition.txt:373:be the response. If there is NO DISPATCH slot, the response will be a LONG ACK ( opc <B4>,,) with the
+loconetpersonaledition.txt:381:Opcodes for access to an auxiliary Service mode Programming Track are included. These requests are not
+loconetpersonaledition.txt:384:Note that several confusing expansions and opcode sequences have been stripped from this LocoNet 
+loconetpersonaledition.txt:393:LocoNet OPCODE SUMMARY: All Copyrights and rights reserved, Digitrax 1997
+loconetpersonaledition.txt:394:NOTE any OPcodes shown here in itallics are not finalised and are informational only. Do
+loconetpersonaledition.txt:395:not use. All other OPCODES and states are reserved for future expansion.
+loconetpersonaledition.txt:400:;2 Byte MESSAGE opcodes
+loconetpersonaledition.txt:401:; FORMAT = <OPC>,<CKSUM>
+loconetpersonaledition.txt:404:OPC_IDLE               0x85 ,FORCE IDLE state, B'cast emerg. STOP NO
+loconetpersonaledition.txt:405:OPC_GPON                0x83 ;GLOBAL power ON reque st            NO
+loconetpersonaledition.txt:406:OPC_GPOFF               0x82 ;GLOBAL power OFF req                NO
+loconetpersonaledition.txt:408:OPC_BUSY                      0x81 ;MASTER busy code, NUL                                NO
+loconetpersonaledition.txt:410:;4 byte MESSAGE OPCODES
+loconetpersonaledition.txt:411:; FORMAT = <OPC>,<ARG1>,<ARG2>,<CKSUM>
+loconetpersonaledition.txt:413:OPC_LOCO_ADR        0xBF ;REQ loco ADR                               YES <E7>SLOT READ
+loconetpersonaledition.txt:414:                ; <0xBF>,<0>,<ADR>,<CHK> REQ loco ADR
+loconetpersonaledition.txt:420:OPC_SW_ACK         0xBD ;REQ SWITCH WITH acknowledge function (not DT200) YES LACK
+loconetpersonaledition.txt:421:                ; <0xBD>,<SW1>,<SW2>,<CHK> REQ SWITCH function
+loconetpersonaledition.txt:426:               ;response is  <0xB4> <3D><00> if DCS100 FIFO is full,command rejected
+loconetpersonaledition.txt:427:                             <0xB4><3D><7F> if DCS100 accepted
+loconetpersonaledition.txt:429:OPC_SW_STATE            0xBC ;REQ state of SWITCH                                                   YES      LACK
+loconetpersonaledition.txt:430:                    ; <0xBC>,<SW1>,<SW2>,<CHK> REQ state of SWITCH
+loconetpersonaledition.txt:432:OPC_RQ_SL_DATA    0xBB ;Request SLOT DATA/status block        YES <E7>SLOT READ
+loconetpersonaledition.txt:433:             ; <0xBB>,<SLOT>,<0>,<CHK> Request SLOT DATA/status block
+loconetpersonaledition.txt:435:OPC_MOVE_SLOTS 0xBA ;MOVE slot SRC to DEST                           YES <E7>SLOT READ
+loconetpersonaledition.txt:436:                ; <0xBA>,<SRC>,<DEST>,<CHK> Move SRC to DEST if SRC            or LACK etc
+loconetpersonaledition.txt:443:                  ;RETURN slot status <0xE7> of DESTINATION slot DEST if move legal
+loconetpersonaledition.txt:450:OPC_LINK_SLOTS      0xB9 ;LINK slot ARG1 to slot ARG2                     YES <E7>SLOT READ
+loconetpersonaledition.txt:451:               ; <0xB9>,<SL1>,<SL2>,<CHK> SLAVE slot SL1 to slot SL2
+loconetpersonaledition.txt:453:            ,Reply is return of SLOT Status <0xE7>. Inspect to see result of Link
+loconetpersonaledition.txt:454:            ,invalid Link will return Long Ack Fail <B4>,<39>,<0>,<CHK>
+loconetpersonaledition.txt:456:OPC_UNLINK_SLOTS 0xB8 ;UNLINK slot ARG1 from slot ARG2             YES <E7>SLOT READ
+loconetpersonaledition.txt:457:              ; <0xB8>,<SL1>,<SL2>,<CHK> UNLINK slot SL1 from SL2
+loconetpersonaledition.txt:461:CODES 0xB8 to 0xBF have responses
+loconetpersonaledition.txt:463:OPC_CONSIST_FUNC 0xB6 ;SET FUNC bits in a CONSIST uplink element NO
+loconetpersonaledition.txt:464:              ; <0xB6>,<SLOT>,<DIRF>,<CHK> UP consist FUNC bits
+loconetpersonaledition.txt:467:OPC_SLOT_STAT1     0xB5 ;WRITE slot stat1                                                NO
+loconetpersonaledition.txt:468:              ; <0xB5>,<SLOT>,<STAT1>,<CHK> WRITE stat1
+loconetpersonaledition.txt:470:OPC_LONG_ACK            0xB4 ;Long acknowledge                         NO
+loconetpersonaledition.txt:471:                    ; <0xB4>,<LOPC>,<ACK1>,<CHK> Long acknowledge
+loconetpersonaledition.txt:472:                   ;<LOPC> is COPY of OPCODE responding to (msb=0).
+loconetpersonaledition.txt:473:                   ;LOPC=0 (unused OPC) is also VALID fail code
+loconetpersonaledition.txt:474:                   ;<ACK1> is appropriate response code for the OPCode
+loconetpersonaledition.txt:476:OPC_INPUT_REP    0xB2      ; General SENSOR Input codes                                  NO
+loconetpersonaledition.txt:477:            ; <0xB2>, <IN1>, <IN2>, <CHK>
+loconetpersonaledition.txt:486:OPC_SW_REP          0xB1 ;Turnout SENSOR state REPORT              NO
+loconetpersonaledition.txt:487:                    ; <0xB1>,<SN1>,<SN2>,<CHK> SENSOR state REPORT
+loconetpersonaledition.txt:491:                                            this <B1> opcode encodes input levels for turnout feedback
+loconetpersonaledition.txt:497:                                           this <B1> opcode encodes current OUTPUT levels
+loconetpersonaledition.txt:501:OPC_SW_REQ           0xB0 ;REQ SWITCH function                                           NO
+loconetpersonaledition.txt:506:                  ; <0xB0>,<SW1>,<SW2>,<CHK> REQ SWITCH function
+loconetpersonaledition.txt:511:     Note-,Immediate response of <0xB4><30><00> if command failed, otherwise no response
+loconetpersonaledition.txt:515:CODES 0xA8 to 0xAF have responses
+loconetpersonaledition.txt:517:OPC_LOCO_SND            0xA2 ;SET SLOT sound functions                                    NO
+loconetpersonaledition.txt:518:OPC_LOCO_DIRF            0xA1 ;SET SLOT dir,F0-4 state                                    NO
+loconetpersonaledition.txt:519:OPC_LOCO_SPD            0xA0 ;SET SLOT speed                                              NO
+loconetpersonaledition.txt:523:; 6 Byte MESSAGE OPCODES
+loconetpersonaledition.txt:524:; FORMAT = <OPC>,<ARG1>,<ARG2>,<ARG3>,<ARG4>,<CKSUM>
+loconetpersonaledition.txt:527:; VARIABLE Byte MESSAGE OPCODES
+loconetpersonaledition.txt:528:; FORMAT = <OPC>,<COUNT>,<ARG2>,<ARG3>,...,<ARG(COUNT-3)>,<CKSUM>
+loconetpersonaledition.txt:530:OPC_WR_SL_DATA 0xEF ;WRITE SLOT DATA, 10 bytes             YES    LACK
+loconetpersonaledition.txt:531:              ; <0xEF>,<0E>,<SLOT#>,<STAT>,<ADR>,<SPD>,<DIRF>,<TRK>
+loconetpersonaledition.txt:535:OPC_SL_RD_DATA 0xE7 ;SLOT DATA return, 10 bytes             NO
+loconetpersonaledition.txt:536:               ; <0xE7>,<0E>,<SLOT#>,<STAT>,<ADR>,<SPD>,<DIRF>,<TRK>
+loconetpersonaledition.txt:549:OPC_PEER_XFER        0xE5     ;move 8 bytes PEER to PEER, SRC->DST      NO resp
+loconetpersonaledition.txt:550:               ;<0xE5>,<10>,<SRC>,<DSTL><DSTH>,<PXCT1>,<D1>,<D2>,<D3>,<D4>,
+loconetpersonaledition.txt:554:               ;                       SRC=0x70-0x7E are reserved
+loconetpersonaledition.txt:567:OPC_IMM_PACKET         0xED ;SEND n-byte packet immediate        LACK
+loconetpersonaledition.txt:568:         ;<0xED>,<0B>,<7F>,<REPS>,<DHI>,<IM1>,<IM2>,<IM3>,<IM4>,<IM5>,<CHK>
+loconetpersonaledition.txt:573:              ;If internal buffer BUSY/full respond with <B4>,<7D>,<0>,<chk>
+loconetpersonaledition.txt:593:                   ;an Indirect pointer. This Slot has same BUSY/ACTIVE bits as TOP of
+loconetpersonaledition.txt:596:                    ;BUSY/ACTIVE: bit encoding for SLOT activity
+loconetpersonaledition.txt:597:       D5-SL_BUSY   ;11=IN_USE loco adr in SLOT -REFRESHED
+loconetpersonaledition.txt:598:       D4-SL_ACTIVE ;10=IDLE loco adr in SLOT     -NOT refreshed
+loconetpersonaledition.txt:612:2) SLOT LOCO ADR: ;LOCO adr Low 7 bits (byte sent as ARG2 in ADR req opcode <BF> )
+loconetpersonaledition.txt:614:3) SLOT SPEED:              ;0x00=SPEED 0 ,STOP inertially;0x01=SPEED 0 EMERGENCY stop
+loconetpersonaledition.txt:615:                            ;0x02->0x7F increasing SPEED,0x7F=MAX speed
+loconetpersonaledition.txt:620:                             (byte also sent as ARG2 in SPD opcode <A0> )
+loconetpersonaledition.txt:622:4)SLOT DIRF byte:            (byte also sent as ARG2 in DIRF opcode <A1>)
+loconetpersonaledition.txt:637:        D3        GTRK_PROG_BUSY                 1=Programming TRACK in this Master is BUSY.
+loconetpersonaledition.txt:640:        D1        GTRK_IDLE    ;                 0=TRACK is PAUSED, B'cast EMERG STOP.
+loconetpersonaledition.txt:656:            (byte also sent as ARG2 in SND opcode)
+loconetpersonaledition.txt:685:The programmer track is accessed as Special slot #124 ( $7C, 0x7C). It is a full asynchronous shared
+loconetpersonaledition.txt:694:<0xEF>,<0E>,<7C>,<PCMD>,<0>,<HOPSA>,<LOPSA>,<TRK>;<CVH>,<CVL>,<DATA7>
+loconetpersonaledition.txt:696:This OPC leads to immediate LACK codes:
+loconetpersonaledition.txt:698:<B4>,<7F>,<0>,<chk>                     Programmer BUSY , task aborted, no reply.
+loconetpersonaledition.txt:700:<B4>,<7F>,<0x40>,<chk>                  Task accepted blind NO <E7> reply at completion.
+loconetpersonaledition.txt:704:executed whilst a current Service Mode programming task is keeping the Programming track BUSY. If a
+loconetpersonaledition.txt:706:can keep the Programming track busy for up to a minute. Multiple devices, throttles/PC's etc, can share
+loconetpersonaledition.txt:708:Any Slot RD from the master will also contain the Programmer Busy status in bit 3 of the <TRK> byte.
+loconetpersonaledition.txt:742:<TRK> Normal Global Track status for this Master, Bit 3 also is 1 WHEN Service Mode track is BUSY
+loconetpersonaledition.txt:752:<0xE7>,<0E>,<7C>,<PCMD>,<PSTAT>,<HOPSA>,<LOPSA>,<TRK>;<CVH>,<CVL>,<DATA7>
+loconetpersonaledition.txt:768:FAST Clock: The system FAST clock and parameters are implemented in Slot#123 <7B>.
+loconetpersonaledition.txt:770:Use <EF> to write new clock information, Slot read of 0x7B,<BB><7B>.., will return current System
+loconetpersonaledition.txt:783:<0xEF>,<0E>,<7B>,<CLK_RATE>,<FRAC_MINSL>,<FRAC_MINSH>,<256-MINS_60>,<TRK>
+loconetpersonaledition.txt:791:<256-MINS_60>, This is FAST clock MINUTES subtracted from 256. Modulo 0-59
+loconetpersonaledition.txt:792:<256-HRS_24>,This is FAST clock HOURS subtracted from 256. Modulo 0-23
